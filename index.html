@@ -70,6 +70,7 @@
         const { useState, useEffect, useMemo, useRef, useCallback } = React;
 
         // --- FULL EXTRACTED DATA (Hardcoded for Persistence) ---
+        // This includes all plants from your uploaded CSV
         const INITIAL_DATA = [
   {
     "id": 1,
@@ -220,6 +221,69 @@
   },
   {
     "id": 8,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Arinellikai (Pomegranate Var)",
+    "Tamil": "அரிநெல்லிக்காய் (Arinellikai)",
+    "Kannada": "Dadimbe (ದಾಡಿಮ್ಬೆ)",
+    "Telugu": "Daalimba (దాలింబ)",
+    "Hindi": "Anar (अनार)",
+    "Korean": "Seokryuyu (석류)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "⚠️ Limited",
+    "Bird-Friendly Status": "🐦 Good",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "High in antioxidants. Controls blood sugar. Aids digestion. Rich in vitamin C.",
+    "Planting Instructions": "Plant from cuttings or grafted plants in well-drained soil with full sunlight. Requires 6-8 hours of direct sun.",
+    "Maintenance Instructions": "Water regularly during dry season. Prune in summer. Apply manure annually. Flowers appear spring-summer.",
+    "Procurement Kanchipuram": "DNSK Gardens (📞 044-27421456); Sri Jakshana Nursery; Local fruit tree nurseries",
+    "Procurement Penukonda/Bangalore": "Bangalore - Cubbon Park Nursery (📞 080-22261338); Lalbagh Nursery",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 9,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Kodukkappuli (Manila Tamarind)",
+    "Tamil": "Kodukkappuli (கொடுக்காப்புளி)",
+    "Kannada": "Seeme Hunase (ಸೀಮೆ ಹುಣಸೆ)",
+    "Telugu": "Seema Chinta (సీమ చింత)",
+    "Hindi": "Jungle Jalebi (जंगल जलेबी)",
+    "Korean": "Manila Tamarindeu (마닐라 타마린드)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Edible pod pulp. Hedge plant. Nitrogen fixer. Drought tolerant.",
+    "Planting Instructions": "Seeds or stem cuttings. Thrives in poor soil. Can be planted as a live fence.",
+    "Maintenance Instructions": "Prune regularly if used as a hedge. Very hardy. Water occasionally in summer.",
+    "Procurement Kanchipuram": "Local nurseries; Roadside plant sellers",
+    "Procurement Penukonda/Bangalore": "Local nurseries in rural Bangalore; Forest Dept",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 10,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Elanthai (Jujube / Ber)",
+    "Tamil": "Elanthai (இலந்தை)",
+    "Kannada": "Bore (ಬೋರೆ)",
+    "Telugu": "Regu (రేగు)",
+    "Hindi": "Ber (बेर)",
+    "Korean": "Daechu (대추)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Fruit rich in Vitamin C. Leaves used in worship. Thorns make good fence.",
+    "Planting Instructions": "Seeds (scarification needed) or grafting. Plant in dry, arid conditions.",
+    "Maintenance Instructions": "Prune heavily every year after harvest (May-June) to induce new growth.",
+    "Procurement Kanchipuram": "Local nurseries; Grafted varieties available in horticulture farms",
+    "Procurement Penukonda/Bangalore": "IIHR Bangalore (improved varieties like Thar Sevak)",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 11,
     "Category": "Timber/Forest",
     "English Name": "Teak",
     "Tamil": "Thekku (தேக்கு)",
@@ -240,7 +304,49 @@
     "Location (English)": ""
   },
   {
-    "id": 9,
+    "id": 12,
+    "Category": "Timber/Forest",
+    "English Name": "Red Sanders",
+    "Tamil": "Semmaram (செம்மரம்)",
+    "Kannada": "Rakta Chandana (ರಕ್ತ ಚಂದನ)",
+    "Telugu": "Erra Chandanam (ఎర్ర చందనం)",
+    "Hindi": "Lal Chandan (लाल चंदन)",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Endemic to Eastern Ghats. Highly prized wood (musical instruments, furniture). Slow growing.",
+    "Planting Instructions": "Seedlings. Requires rocky/gravelly soil. Well drained. Protect from theft.",
+    "Maintenance Instructions": "Water sparingly. Prune lower branches to get straight bole. Long rotation (20+ yrs).",
+    "Procurement Kanchipuram": "Forest Dept Nurseries; Licensed private nurseries",
+    "Procurement Penukonda/Bangalore": "Tirupati Forest Nurseries (main source); IWST Bangalore",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 13,
+    "Category": "Timber/Forest",
+    "English Name": "Sandalwood",
+    "Tamil": "Chandanam (சந்தனம்)",
+    "Kannada": "Srigandha (ಶ್ರೀಗಂಧ)",
+    "Telugu": "Gandham (గంధం)",
+    "Hindi": "Chandan (चंदन)",
+    "Korean": "Baekdan (백단)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Fragrant heartwood. Expensive oil. Hemi-parasite (needs host plant).",
+    "Planting Instructions": "Plant with host (e.g., Sesbania/Neem). Dibbling seeds in pits. Protect from grazing.",
+    "Maintenance Instructions": "Ensure host plant grows well but doesn't shade sandalwood completely. Secure fencing needed.",
+    "Procurement Kanchipuram": "Forest Dept; IWST",
+    "Procurement Penukonda/Bangalore": "IWST Bangalore (best source); Forest Dept nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 14,
     "Category": "Timber/Forest",
     "English Name": "Neem",
     "Tamil": "Vembu (வேம்பு)",
@@ -261,7 +367,7 @@
     "Location (English)": "Theeyattur, Pudukkottai"
   },
   {
-    "id": 10,
+    "id": 15,
     "Category": "Timber/Forest",
     "English Name": "Pongamia (Indian Beech)",
     "Tamil": "Pungai (புங்கை)",
@@ -282,7 +388,112 @@
     "Location (English)": ""
   },
   {
-    "id": 11,
+    "id": 16,
+    "Category": "Timber/Forest",
+    "English Name": "Bamboo",
+    "Tamil": "Moongil (மூங்கில்)",
+    "Kannada": "Bidiru (ಬಿದಿರು)",
+    "Telugu": "Veduru (వెదురు)",
+    "Hindi": "Baans (बांस)",
+    "Korean": "Daenamu (대나무)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Punarvasu",
+    "Specific Highlights/Benefits": "Fast growing. Poor man's timber. Soil binder. Edible shoots. Paper industry.",
+    "Planting Instructions": "Rhizomes or tissue culture plants. Spacing 5x5m. Requires moisture initially.",
+    "Maintenance Instructions": "Regular watering/thinning. Mound soil around clumps. Harvest mature culms after 3-4 years.",
+    "Procurement Kanchipuram": "Forest Dept; Bamboo Mission nurseries",
+    "Procurement Penukonda/Bangalore": "Institute of Wood Science & Technology; Bamboo Society of India (Bangalore)",
+    "Temple Name (English)": "Abhatshayeswara Temple",
+    "Location (English)": "Irumbai, Viluppuram"
+  },
+  {
+    "id": 17,
+    "Category": "Timber/Forest",
+    "English Name": "Rosewood (Indian)",
+    "Tamil": "Eetti (ஈட்டி)",
+    "Kannada": "Beete (ಬೀಟೆ)",
+    "Telugu": "Jittegi (జిట్టేగి)",
+    "Hindi": "Sheesham (शीशम)",
+    "Korean": "Jangmi-mok (장미목)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "⚠️ Limited",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Premium furniture wood. Nitrogen fixer. Slow growing. Strong timber.",
+    "Planting Instructions": "Root suckers or seeds. Deep moist soil preferred.",
+    "Maintenance Instructions": "Protect from fire and grazing. Prune for straight bole.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept; IWST",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 18,
+    "Category": "Timber/Forest",
+    "English Name": "Vengai (Indian Kino)",
+    "Tamil": "Vengai (வேங்கை)",
+    "Kannada": "Honne (ಹೊನ್ನೆ)",
+    "Telugu": "Vegisa (వేగిస)",
+    "Hindi": "Bijasal (बीजासाल)",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Medicinal gum (kino). Water turns blue in wood cup (diabetic cure). Timber.",
+    "Planting Instructions": "Seeds. Soaking helps germination. Well drained soil.",
+    "Maintenance Instructions": "Moderate watering. Pruning.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 19,
+    "Category": "Timber/Forest",
+    "English Name": "Mahogany",
+    "Tamil": "Mahogany (மஹோகனி)",
+    "Kannada": "Mahogany",
+    "Telugu": "Mahogany",
+    "Hindi": "Mahogany",
+    "Korean": "Mahogani",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "High value timber. Straight bole. Fast growing exotic (naturalized).",
+    "Planting Instructions": "Seedlings. Deep fertile soil. Space 3x3m.",
+    "Maintenance Instructions": "Shoot borer is a major pest - monitor young trees. Pruning.",
+    "Procurement Kanchipuram": "Private timber nurseries",
+    "Procurement Penukonda/Bangalore": "Private timber nurseries (Many in Hosur/Bangalore area)",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 20,
+    "Category": "Timber/Forest",
+    "English Name": "Malabar Neem (Melia Dubia)",
+    "Tamil": "Malai Vembu (மலை வேம்பு)",
+    "Kannada": "Hebbevu (ಹೆಬ್ಬೇವು)",
+    "Telugu": "Malabar Vepa (మలబార్ వేప)",
+    "Hindi": "Gora Neem",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Fastest growing timber (plywood). Agroforestry favorite. Short rotation (6-7 yrs).",
+    "Planting Instructions": "Clonal plants preferred for uniformity. High water and nutrient requirement.",
+    "Maintenance Instructions": "Regular irrigation and fertilization essential for fast growth. Prune side branches.",
+    "Procurement Kanchipuram": "Mettupalayam Forest College (Source of clones); Private nurseries",
+    "Procurement Penukonda/Bangalore": "Private nurseries specializing in Melia; Forest Dept",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 21,
     "Category": "Medicinal/Heritage",
     "English Name": "Mahua (Indian Butter Tree)",
     "Tamil": "Illupai (இலுப்பை)",
@@ -303,7 +514,7 @@
     "Location (English)": "Karukudi, Tiruvarur"
   },
   {
-    "id": 12,
+    "id": 22,
     "Category": "Medicinal/Heritage",
     "English Name": "Peepal (Sacred Fig)",
     "Tamil": "Arasu (அரசு)",
@@ -324,7 +535,7 @@
     "Location (English)": "Vilankulam, Tanjore"
   },
   {
-    "id": 13,
+    "id": 23,
     "Category": "Medicinal/Heritage",
     "English Name": "Banyan",
     "Tamil": "Aalam (ஆலம்)",
@@ -345,7 +556,7 @@
     "Location (English)": "Tiruvarambur, Tiruchirappalli"
   },
   {
-    "id": 14,
+    "id": 24,
     "Category": "Medicinal/Heritage",
     "English Name": "Arjun",
     "Tamil": "Marudham (மருதம்)",
@@ -364,6 +575,1140 @@
     "Procurement Penukonda/Bangalore": "Forest Dept",
     "Temple Name (English)": "Tantondreeswara Temple",
     "Location (English)": "Chittukadu, Chennai"
+  },
+  {
+    "id": 25,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Baheda",
+    "Tamil": "Thandrikai (தான்றிக்காய்)",
+    "Kannada": "Tare (ತಾರೆ)",
+    "Telugu": "Tanikaya (తానికాయ)",
+    "Hindi": "Baheda (बहेड़ा)",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "One of Triphala. Medicinal fruits (digestive, respiratory). Large tree.",
+    "Planting Instructions": "Seeds. Slow germination. Space 10m apart.",
+    "Maintenance Instructions": "Protect from cattle. Water in dry season.",
+    "Procurement Kanchipuram": "FRLHT; Forest Dept",
+    "Procurement Penukonda/Bangalore": "FRLHT Bangalore",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 26,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Curry Leaf",
+    "Tamil": "Karuveppilai (கருவேப்பிலை)",
+    "Kannada": "Karibevu (ಕರಿಬೇವು)",
+    "Telugu": "Karivepaku (కరివేపాకు)",
+    "Hindi": "Kadi Patta (कड़ी पत्ता)",
+    "Korean": "Keori (커리)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Essential culinary spice. Medicinal (digestive, hair). Bird dispersed seeds.",
+    "Planting Instructions": "Fresh seeds or root suckers. Rich soil. Partial shade initially.",
+    "Maintenance Instructions": "Harvest leaves regularly to encourage bushiness. Fertilize with nitrogen.",
+    "Procurement Kanchipuram": "All nurseries",
+    "Procurement Penukonda/Bangalore": "All nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 27,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Drumstick (Moringa)",
+    "Tamil": "Murungai (முருங்கை)",
+    "Kannada": "Nugge (ನುಗ್ಗೆ)",
+    "Telugu": "Munaga (మునగ)",
+    "Hindi": "Sahjan (सहजन)",
+    "Korean": "Deureom-seutik (드럼스틱)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Superfood. Pods and leaves rich in vitamins. Fast growing. Drought tolerant.",
+    "Planting Instructions": "Stem cuttings (1m long) or seeds. Plant in situ. Very fast.",
+    "Maintenance Instructions": "Prune frequently to keep height low (for harvesting). Pollarding.",
+    "Procurement Kanchipuram": "Everywhere; Cuttings from neighbors",
+    "Procurement Penukonda/Bangalore": "Everywhere; Cuttings from neighbors",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 28,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Kadamba",
+    "Tamil": "Kadambu (கடம்பு)",
+    "Kannada": "Kadamba",
+    "Telugu": "Kadambamu",
+    "Hindi": "Kadam",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Sathayam",
+    "Specific Highlights/Benefits": "Sacred tree (Krishna/Murugan). Fragrant ball flowers. Fast growing timber.",
+    "Planting Instructions": "Seeds (very tiny). Mix with sand. Wet soil preferred.",
+    "Maintenance Instructions": "Water loving. Good for river banks. Fast growth requires nutrition.",
+    "Procurement Kanchipuram": "Forest Dept; Temple nurseries",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "Palasa Vana Natha Temple",
+    "Location (English)": "Kanchipuram"
+  },
+  {
+    "id": 29,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Magizham (Spanish Cherry)",
+    "Tamil": "Magizham (மகிழம்)",
+    "Kannada": "Ranjal (ರಂಜಲ್)",
+    "Telugu": "Pogada (పొగడ)",
+    "Hindi": "Maulsari",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Anuradha",
+    "Specific Highlights/Benefits": "Fragrant star-shaped flowers. Dense shade. Medicinal bark/seeds.",
+    "Planting Instructions": "Seeds. Slow growing initially. Long lived.",
+    "Maintenance Instructions": "Minimal. Good avenue tree.",
+    "Procurement Kanchipuram": "Temple nurseries",
+    "Procurement Penukonda/Bangalore": "Lalbagh; Private nurseries",
+    "Temple Name (English)": "Pranatha Iswara Temple",
+    "Location (English)": "Tirumangalkudi, Tanjore"
+  },
+  {
+    "id": 30,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Punnai (Alexandrian Laurel)",
+    "Tamil": "Punnai (புன்னை)",
+    "Kannada": "Surahonne",
+    "Telugu": "Ponna",
+    "Hindi": "Sultan Champa",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Ashlesha/Aayilyam",
+    "Specific Highlights/Benefits": "Coastal tree but grows inland. Oil from seeds (medicinal/lamp). White fragrant flowers.",
+    "Planting Instructions": "Seeds. Sandy soil preferred but adaptable.",
+    "Maintenance Instructions": "Slow growing. Protect from frost.",
+    "Procurement Kanchipuram": "Coastal nurseries; Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept; Auroville nurseries",
+    "Temple Name (English)": "Karkateshwara Temple",
+    "Location (English)": "Tirundudevankudi, Tanjore"
+  },
+  {
+    "id": 31,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Sarakonrai (Indian Laburnum)",
+    "Tamil": "Sarakonrai (சரக்கொன்றை)",
+    "Kannada": "Kakke (ಕಕ್ಕೆ)",
+    "Telugu": "Rela (రేల)",
+    "Hindi": "Amaltas",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Golden Shower tree. Ornamental. Medicinal pulp (laxative). State flower of Kerala.",
+    "Planting Instructions": "Seeds. Drought tolerant. Ornamental landscaping.",
+    "Maintenance Instructions": "Watch for caterpillars defoliating. Prune after flowering.",
+    "Procurement Kanchipuram": "Ornamental nurseries",
+    "Procurement Penukonda/Bangalore": "Ornamental nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 32,
+    "Category": "Flowering/Ornamental",
+    "English Name": "Champak (Shenbagam)",
+    "Tamil": "Shenbagam (செண்பகம்)",
+    "Kannada": "Sampige (ಸಂಪಿಗೆ)",
+    "Telugu": "Sampangi (సంపెంగ)",
+    "Hindi": "Champa",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Highly fragrant yellow/orange flowers. Used in worship/perfume. Timber.",
+    "Planting Instructions": "Grafted plants flower earlier. Acidic soil preferred.",
+    "Maintenance Instructions": "Regular water. Mulch to keep roots cool.",
+    "Procurement Kanchipuram": "Flower nurseries",
+    "Procurement Penukonda/Bangalore": "Lalbagh; Flower nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 33,
+    "Category": "Flowering/Ornamental",
+    "English Name": "Parijatham (Coral Jasmine)",
+    "Tamil": "Parijatham (பாரிஜாதம்)",
+    "Kannada": "Parijatha (ಪಾರಿಜಾತ)",
+    "Telugu": "Parijatam (పారిజాతం)",
+    "Hindi": "Harsingar",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Night flowering. Divine fragrance. Medicinal leaves (sciatica). Orange stem flowers.",
+    "Planting Instructions": "Seeds or cuttings. Shrub/Small tree.",
+    "Maintenance Instructions": "Prune heavily to maintain shape and flowering.",
+    "Procurement Kanchipuram": "Local nurseries",
+    "Procurement Penukonda/Bangalore": "Local nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 34,
+    "Category": "Flowering/Ornamental",
+    "English Name": "Hibiscus",
+    "Tamil": "Sembaruthi (செம்பருத்தி)",
+    "Kannada": "Dasavala (ದಾಸವಾಳ)",
+    "Telugu": "Mandaram (మందారం)",
+    "Hindi": "Gudhal",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Medicinal flowers/leaves (hair care, tea). Ornamental. Hedge.",
+    "Planting Instructions": "Cuttings. Easy to root.",
+    "Maintenance Instructions": "Regular water and fertilizer (potash). Mealybug control needed.",
+    "Procurement Kanchipuram": "All nurseries",
+    "Procurement Penukonda/Bangalore": "All nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 35,
+    "Category": "Flowering/Ornamental",
+    "English Name": "Nandiavattai (Crape Jasmine)",
+    "Tamil": "Nandiavattai (நந்தியாவட்டை)",
+    "Kannada": "Nandi Battalu",
+    "Telugu": "Nandi Vardhanam",
+    "Hindi": "Chandni",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "White flowers used for pooja. Eye medicine (traditional).",
+    "Planting Instructions": "Cuttings.",
+    "Maintenance Instructions": "Low maintenance. Shade tolerant.",
+    "Procurement Kanchipuram": "All nurseries",
+    "Procurement Penukonda/Bangalore": "All nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 36,
+    "Category": "Flowering/Ornamental",
+    "English Name": "Arali (Oleander)",
+    "Tamil": "Arali (அரளி)",
+    "Kannada": "Kanagile",
+    "Telugu": "Ganneru",
+    "Hindi": "Kaner",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Hardy roadside plant. Toxic/Poisonous. Flowers for worship. Drought tolerant.",
+    "Planting Instructions": "Cuttings.",
+    "Maintenance Instructions": "Extreme drought tolerance. Prune for shape.",
+    "Procurement Kanchipuram": "Roadside nurseries",
+    "Procurement Penukonda/Bangalore": "Roadside nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 37,
+    "Category": "Flowering/Ornamental",
+    "English Name": "Manoranjitham (Ylang Ylang var)",
+    "Tamil": "Manoranjitham (மனோரஞ்சிதம்)",
+    "Kannada": "Manoranjini",
+    "Telugu": "Sampenga",
+    "Hindi": "Hari Champa",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Climber/Shrub. Extremely fragrant green flowers turning yellow. Perfume industry.",
+    "Planting Instructions": "Seeds or layering. Support needed for climbing.",
+    "Maintenance Instructions": "Watering needed. Prune to keep bush form.",
+    "Procurement Kanchipuram": "Specialty nurseries",
+    "Procurement Penukonda/Bangalore": "Lalbagh; Specialty nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 38,
+    "Category": "Spices/Condiments",
+    "English Name": "Pepper (Black)",
+    "Tamil": "Milagu (மிளகு)",
+    "Kannada": "Menasu",
+    "Telugu": "Miriyalu",
+    "Hindi": "Kali Mirch",
+    "Korean": "Huchu (후추)",
+    "Kanchipuram": "⚠️ Micro-climate",
+    "Anantapur": "⚠️ No",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "King of spices. Vine. Climbs on trees (Silver oak/Areca).",
+    "Planting Instructions": "Cuttings. Shade and humidity required. Intercrop.",
+    "Maintenance Instructions": "Train on support trees. Mulch.",
+    "Procurement Kanchipuram": "Spice board nurseries (Yercaud/Kolli hills)",
+    "Procurement Penukonda/Bangalore": "Spice board; Kerala nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 39,
+    "Category": "Spices/Condiments",
+    "English Name": "Clove",
+    "Tamil": "Krambu (கிராம்பு)",
+    "Kannada": "Lavanga",
+    "Telugu": "Lavangam",
+    "Hindi": "Laung",
+    "Korean": "Jeonghyang",
+    "Kanchipuram": "⚠️ No",
+    "Anantapur": "⚠️ No",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Unopened flower bud is spice. High value. Hill station crop.",
+    "Planting Instructions": "Seedlings. Shade and moisture essential. Not for plains.",
+    "Maintenance Instructions": "Moisture critical.",
+    "Procurement Kanchipuram": "Hill nurseries",
+    "Procurement Penukonda/Bangalore": "Hill nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 40,
+    "Category": "Spices/Condiments",
+    "English Name": "Cinnamon",
+    "Tamil": "Pattai (பட்டை)",
+    "Kannada": "Dalchini",
+    "Telugu": "Dalchini",
+    "Hindi": "Dalchini",
+    "Korean": "Gyepi",
+    "Kanchipuram": "⚠️ Limited",
+    "Anantapur": "⚠️ No",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Bark is spice. Leaf is Tej Patta. Hardy than clove.",
+    "Planting Instructions": "Seedlings. Sandy soil.",
+    "Maintenance Instructions": "Coppicing for bark harvest.",
+    "Procurement Kanchipuram": "Spice board",
+    "Procurement Penukonda/Bangalore": "Spice board",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 41,
+    "Category": "Spices/Condiments",
+    "English Name": "Nutmeg",
+    "Tamil": "Jathikai (ஜாதிக்காய்)",
+    "Kannada": "Jayikai",
+    "Telugu": "Jajikaya",
+    "Hindi": "Jaiphal",
+    "Korean": "Nutmeg",
+    "Kanchipuram": "⚠️ Micro-climate",
+    "Anantapur": "⚠️ No",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Two spices: Nutmeg (seed) and Mace (aril). River banks suitable.",
+    "Planting Instructions": "Grafts (to ensure female). Shade and water essential.",
+    "Maintenance Instructions": "Regular irrigation.",
+    "Procurement Kanchipuram": "Kerala nurseries",
+    "Procurement Penukonda/Bangalore": "Kerala nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 42,
+    "Category": "Spices/Condiments",
+    "English Name": "Allspice",
+    "Tamil": "Sarvasugandhi",
+    "Kannada": "Sarvasugandhi",
+    "Telugu": "Sarvasugandhi",
+    "Hindi": "Kebab Chini (var)",
+    "Korean": "Allspice",
+    "Kanchipuram": "⚠️ Limited",
+    "Anantapur": "⚠️ No",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Leaves smell of clove, cinnamon, nutmeg. Flavouring.",
+    "Planting Instructions": "Seedlings. Shade.",
+    "Maintenance Instructions": "Moderate water.",
+    "Procurement Kanchipuram": "Hill nurseries",
+    "Procurement Penukonda/Bangalore": "Hill nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 43,
+    "Category": "Minor Forest Produce",
+    "English Name": "Soapnut",
+    "Tamil": "Poovanthi (பூவந்தி)",
+    "Kannada": "Antuvala",
+    "Telugu": "Kunkudu",
+    "Hindi": "Reetha",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Natural soap/shampoo. Sustainable. Timber.",
+    "Planting Instructions": "Seeds. Hardy.",
+    "Maintenance Instructions": "Low maintenance.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept; Tribal co-ops",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 44,
+    "Category": "Minor Forest Produce",
+    "English Name": "Shikakai",
+    "Tamil": "Shikakai (சிகைக்காய்)",
+    "Kannada": "Sigekai",
+    "Telugu": "Seekaya",
+    "Hindi": "Shikakai",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Climbing shrub. Hair cleanser. Thorny fence.",
+    "Planting Instructions": "Seeds. Support needed or fence.",
+    "Maintenance Instructions": "Pruning. Harvesting pods.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 45,
+    "Category": "Minor Forest Produce",
+    "English Name": "Pungai (Already listed)",
+    "Tamil": "Pungai",
+    "Kannada": "Honge",
+    "Telugu": "Kanuga",
+    "Hindi": "Karanj",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Oil seeds.",
+    "Planting Instructions": "See Timber.",
+    "Maintenance Instructions": "See Timber.",
+    "Procurement Kanchipuram": "",
+    "Procurement Penukonda/Bangalore": "",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 46,
+    "Category": "Minor Forest Produce",
+    "English Name": "Kadukkai (Haritaki)",
+    "Tamil": "Kadukkai (கடுக்காய்)",
+    "Kannada": "Alale",
+    "Telugu": "Karakkaya",
+    "Hindi": "Harad",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Triphala ingredient. Mother of herbs. Tanning leather.",
+    "Planting Instructions": "Seeds. Slow growth. Dry forest species.",
+    "Maintenance Instructions": "Protect from fire.",
+    "Procurement Kanchipuram": "FRLHT; Forest Dept",
+    "Procurement Penukonda/Bangalore": "FRLHT",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 47,
+    "Category": "Sacred/Temple Trees",
+    "English Name": "Vilvam (Bael)",
+    "Tamil": "Vilvam (வில்வம்)",
+    "Kannada": "Bilva",
+    "Telugu": "Maredu",
+    "Hindi": "Bel",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Sacred to Shiva. Leaves for pooja. Fruit medicinal (digestive).",
+    "Planting Instructions": "Seeds or root suckers. Hardy.",
+    "Maintenance Instructions": "Harvest leaves carefully.",
+    "Procurement Kanchipuram": "Temple nurseries",
+    "Procurement Penukonda/Bangalore": "Temple nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 48,
+    "Category": "Sacred/Temple Trees",
+    "English Name": "Vanni (Prosopis cineraria)",
+    "Tamil": "Vanni (வன்னி)",
+    "Kannada": "Banni",
+    "Telugu": "Jammi",
+    "Hindi": "Khejri",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Avittam",
+    "Specific Highlights/Benefits": "Life line of desert. Nitrogen fixer. Fodder. Sacred (Pandavas).",
+    "Planting Instructions": "Seeds. Deep root system. Extremely drought tolerant.",
+    "Maintenance Instructions": "Lopping for fodder.",
+    "Procurement Kanchipuram": "Forest Dept (Social forestry)",
+    "Procurement Penukonda/Bangalore": "Forest Dept; Arid zone institutes",
+    "Temple Name (English)": "Nilakanta Iswara Temple",
+    "Location (English)": "Iluppaipatti, Mayiladuthurai"
+  },
+  {
+    "id": 49,
+    "Category": "Sacred/Temple Trees",
+    "English Name": "Nagalinga (Cannonball)",
+    "Tamil": "Nagalingam (நாகலிங்கம்)",
+    "Kannada": "Nagalinga",
+    "Telugu": "Nagamalli",
+    "Hindi": "Shiv Kamal",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Spectacular flowers (Snake hood shape). Large round fruits. Ornamental.",
+    "Planting Instructions": "Seeds.",
+    "Maintenance Instructions": "Watering needed. Space needed.",
+    "Procurement Kanchipuram": "Temple nurseries",
+    "Procurement Penukonda/Bangalore": "Temple nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 50,
+    "Category": "Sacred/Temple Trees",
+    "English Name": "Purasu (Flame of Forest)",
+    "Tamil": "Purasu (புரசு)",
+    "Kannada": "Muttuga",
+    "Telugu": "Moduga",
+    "Hindi": "Palash",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Purva Phalguni",
+    "Specific Highlights/Benefits": "Flame of the Forest. Brilliant orange flowers. Dye. Leaf plates.",
+    "Planting Instructions": "Seeds. Root suckers. Slow growing.",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "Agni Pureeshwara Temple",
+    "Location (English)": "Tirupugalur, Tiruvarur"
+  },
+  {
+    "id": 51,
+    "Category": "Ficus Species",
+    "English Name": "Athi (Cluster Fig)",
+    "Tamil": "Athi (அத்தி)",
+    "Kannada": "Atti",
+    "Telugu": "Medi",
+    "Hindi": "Gular",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "Krittika",
+    "Specific Highlights/Benefits": "Keystone species. Fruits on trunk. Edible. Supports wasps/birds.",
+    "Planting Instructions": "Cuttings or seeds. Near water source good.",
+    "Maintenance Instructions": "No maintenance.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "Patanjali Iswara Temple",
+    "Location (English)": "Kanataampuliyur Kattumanna Kovil, Kadalur"
+  },
+  {
+    "id": 52,
+    "Category": "Ficus Species",
+    "English Name": "Ichi (White Fig)",
+    "Tamil": "Ichi (இச்சி)",
+    "Kannada": "Basari",
+    "Telugu": "Juvi",
+    "Hindi": "Pilkhan",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "Uttara Phalguni",
+    "Specific Highlights/Benefits": "Excellent shade. Bird attractor. Roadside avenue.",
+    "Planting Instructions": "Cuttings/Seeds.",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "Mangalyashwara Temple",
+    "Location (English)": "Idayatrumangalam, Tiruchirappalli"
+  },
+  {
+    "id": 53,
+    "Category": "Ficus Species",
+    "English Name": "Kal Ichi (Rock Fig)",
+    "Tamil": "Kal Ichi",
+    "Kannada": "Kallu Atti",
+    "Telugu": "Konda Juvi",
+    "Hindi": "",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Lithophyte (grows on rocks). Bird food.",
+    "Planting Instructions": "Seeds.",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 54,
+    "Category": "Ficus Species",
+    "English Name": "Krishna Fig",
+    "Tamil": "Krishna Athi",
+    "Kannada": "Krishna Ficus",
+    "Telugu": "Krishna Medi",
+    "Hindi": "Makhan Katori",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Cup shaped leaves (Krishna's butter cup). Ornamental/Sacred.",
+    "Planting Instructions": "Graft/Air layering.",
+    "Maintenance Instructions": "Regular water.",
+    "Procurement Kanchipuram": "Specialty nurseries",
+    "Procurement Penukonda/Bangalore": "Lalbagh; Specialty nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 55,
+    "Category": "Other Native Trees",
+    "English Name": "Vengai (Indian Kino - Repeat)",
+    "Tamil": "",
+    "Kannada": "",
+    "Telugu": "",
+    "Hindi": "",
+    "Korean": "",
+    "Kanchipuram": "",
+    "Anantapur": "",
+    "Bird-Friendly Status": "",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "",
+    "Planting Instructions": "",
+    "Maintenance Instructions": "",
+    "Procurement Kanchipuram": "",
+    "Procurement Penukonda/Bangalore": "",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 56,
+    "Category": "Other Native Trees",
+    "English Name": "Vagai (Siris)",
+    "Tamil": "Vagai (வாகை)",
+    "Kannada": "Bage",
+    "Telugu": "Dirisena",
+    "Hindi": "Siris",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Nitrogen fixer. Timber. Shade in tea gardens. Fast growing.",
+    "Planting Instructions": "Seeds.",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 57,
+    "Category": "Other Native Trees",
+    "English Name": "Poovarasu (Portia Tree)",
+    "Tamil": "Poovarasu (பூவரசு)",
+    "Kannada": "Huvarasi",
+    "Telugu": "Ganga Ravi",
+    "Hindi": "Paras Peepal",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Yellow flowers. Timber (gunstocks). Coastal hardy.",
+    "Planting Instructions": "Cuttings or seeds.",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Local nurseries",
+    "Procurement Penukonda/Bangalore": "Local nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 58,
+    "Category": "Other Native Trees",
+    "English Name": "Kalyana Murungai (Indian Coral)",
+    "Tamil": "Kalyana Murungai (கல்யாண முருங்கை)",
+    "Kannada": "Halvana",
+    "Telugu": "Badita",
+    "Hindi": "Pangara",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Red flowers. Bird attractor. Live fence. Nitrogen fixer. Easy to root.",
+    "Planting Instructions": "Large cuttings (poles).",
+    "Maintenance Instructions": "Pruning.",
+    "Procurement Kanchipuram": "Cuttings from fences",
+    "Procurement Penukonda/Bangalore": "Cuttings from fences",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 59,
+    "Category": "Nakshatra Trees",
+    "English Name": "Strychnine Tree",
+    "Tamil": "Etti (எட்டி)",
+    "Kannada": "Kasarka",
+    "Telugu": "Mushti",
+    "Hindi": "Kuchla",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "Ashwini",
+    "Specific Highlights/Benefits": "Medicinal (poisonous seeds). Snake bite cure.",
+    "Planting Instructions": "Seeds.",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Forest Dept; FRLHT",
+    "Procurement Penukonda/Bangalore": "FRLHT",
+    "Temple Name (English)": "Valmiki Iswara Temple",
+    "Location (English)": "Kumbakonam"
+  },
+  {
+    "id": 60,
+    "Category": "Nakshatra Trees",
+    "English Name": "Cutch Tree",
+    "Tamil": "Karungali (கருங்காலி)",
+    "Kannada": "Kaggali",
+    "Telugu": "Chandra",
+    "Hindi": "Khair",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "Mrigashirsha",
+    "Specific Highlights/Benefits": "Ebony-like heartwood. Medicinal. Katha extraction.",
+    "Planting Instructions": "Seeds. Thorny.",
+    "Maintenance Instructions": "Drought tolerant.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "Mahakaleshwara Temple",
+    "Location (English)": "Ambar Mahakalakam, Tiruvarur"
+  },
+  {
+    "id": 61,
+    "Category": "Nakshatra Trees",
+    "English Name": "Long Pepper",
+    "Tamil": "Thippili (திப்பிலி)",
+    "Kannada": "Hippali",
+    "Telugu": "Pippali",
+    "Hindi": "Pippali",
+    "Korean": "Na",
+    "Kanchipuram": "⚠️ Micro-climate",
+    "Anantapur": "⚠️ No",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "Aardra/Thiruvathira",
+    "Specific Highlights/Benefits": "Climber. Spice/Medicine (Trikatu).",
+    "Planting Instructions": "Cuttings. Shade.",
+    "Maintenance Instructions": "Moisture.",
+    "Procurement Kanchipuram": "Herbal nurseries",
+    "Procurement Penukonda/Bangalore": "FRLHT",
+    "Temple Name (English)": "Vasi Iswara Temple",
+    "Location (English)": "Tirupachur, Tiruvallur"
+  },
+  {
+    "id": 62,
+    "Category": "Nakshatra Trees",
+    "English Name": "Hog Plum",
+    "Tamil": "Maanpul (மான்புல்) / Othiyam",
+    "Kannada": "Amate",
+    "Telugu": "Adavi Mamidi",
+    "Hindi": "Ambada",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Hasta",
+    "Specific Highlights/Benefits": "Sour fruit (pickles). Soft wood. Live fence.",
+    "Planting Instructions": "Large cuttings (poles).",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Local",
+    "Procurement Penukonda/Bangalore": "Local",
+    "Temple Name (English)": "Krupakupareswarar Temple",
+    "Location (English)": "Komal, Nagapattinam"
+  },
+  {
+    "id": 63,
+    "Category": "Nakshatra Trees",
+    "English Name": "Mini Jackfruit (Aini)",
+    "Tamil": "Kutti Pala / Aini",
+    "Kannada": "Hebbalasu",
+    "Telugu": "Aini",
+    "Hindi": "Aini",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Ketai",
+    "Specific Highlights/Benefits": "Timber (Houseboats). Edible fruit.",
+    "Planting Instructions": "Seeds.",
+    "Maintenance Instructions": "Water needed.",
+    "Procurement Kanchipuram": "Kerala nurseries",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "Vaidya Natha Temple",
+    "Location (English)": "Madurai"
+  },
+  {
+    "id": 64,
+    "Category": "Nakshatra Trees",
+    "English Name": "Sami Plant",
+    "Tamil": "Vanni / Sami",
+    "Kannada": "Banni",
+    "Telugu": "Jammi",
+    "Hindi": "Shami",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "Puratadam",
+    "Specific Highlights/Benefits": "Sacred (Dussehra). Fire sacrifice wood.",
+    "Planting Instructions": "Seeds.",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Temple nurseries",
+    "Procurement Penukonda/Bangalore": "Temple nurseries",
+    "Temple Name (English)": "Palasa Vana Natha Temple",
+    "Location (English)": "Kanchipuram"
+  },
+  {
+    "id": 65,
+    "Category": "Nakshatra Trees",
+    "English Name": "Crown Flower (Erukku)",
+    "Tamil": "Erukku (எருக்கு)",
+    "Kannada": "Ekka",
+    "Telugu": "Jilledu",
+    "Hindi": "Aak",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "Thiruvonam",
+    "Specific Highlights/Benefits": "Weed/Shrub. Sacred (Ganesha/Shiva). Medicinal latex. Butterfly host (Monarch/Tiger).",
+    "Planting Instructions": "Seeds. Grows in waste land.",
+    "Maintenance Instructions": "None.",
+    "Procurement Kanchipuram": "Wild",
+    "Procurement Penukonda/Bangalore": "Wild",
+    "Temple Name (English)": "Vaidya Natha Swami Temple",
+    "Location (English)": "Vaidheeswarankovil"
+  },
+  {
+    "id": 66,
+    "Category": "Nakshatra Trees",
+    "English Name": "Toothbrush Tree",
+    "Tamil": "Uga / Vanni (var)",
+    "Kannada": "Goni",
+    "Telugu": "Sokha",
+    "Hindi": "Pilu / Miswak",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Avittam",
+    "Specific Highlights/Benefits": "Miswak (Teeth cleaning twig). Edible berries. Salt tolerant.",
+    "Planting Instructions": "Seeds.",
+    "Maintenance Instructions": "Hardy.",
+    "Procurement Kanchipuram": "Arid zone nurseries",
+    "Procurement Penukonda/Bangalore": "Arid zone nurseries",
+    "Temple Name (English)": "Nilakanta Iswara Temple",
+    "Location (English)": "Iluppaipatti, Mayiladuthurai"
+  },
+  {
+    "id": 67,
+    "Category": "Additional Medicinal",
+    "English Name": "Amla (Indian Gooseberry)",
+    "Tamil": "Nelli",
+    "Kannada": "Amalaki",
+    "Telugu": "Usirikai",
+    "Hindi": "Amla",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Repeat entry.",
+    "Planting Instructions": "",
+    "Maintenance Instructions": "",
+    "Procurement Kanchipuram": "",
+    "Procurement Penukonda/Bangalore": "",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 68,
+    "Category": "Additional Medicinal",
+    "English Name": "Arinellikai (Star Gooseberry)",
+    "Tamil": "Arinellikai",
+    "Kannada": "Kirunelli",
+    "Telugu": "Racha Usiri",
+    "Hindi": "Harfarauri",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Sour fruit. Pickles. Vitamin C.",
+    "Planting Instructions": "Seeds/Layering.",
+    "Maintenance Instructions": "Water needed.",
+    "Procurement Kanchipuram": "Local",
+    "Procurement Penukonda/Bangalore": "Local",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 69,
+    "Category": "Additional Medicinal",
+    "English Name": "Ashoka",
+    "Tamil": "Ashogam (அசோகம்)",
+    "Kannada": "Ashoka",
+    "Telugu": "Ashokamu",
+    "Hindi": "Ashoka",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Sacred (Sita). Medicinal bark (Uterus health). Beautiful orange flowers.",
+    "Planting Instructions": "Seeds. Shade loving when young.",
+    "Maintenance Instructions": "Moisture.",
+    "Procurement Kanchipuram": "Herbal nurseries",
+    "Procurement Penukonda/Bangalore": "Herbal nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 70,
+    "Category": "Additional Medicinal",
+    "English Name": "Castor",
+    "Tamil": "Amanakku (ஆமணக்கு)",
+    "Kannada": "Haralu",
+    "Telugu": "Amudam",
+    "Hindi": "Arandi",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Oil (medicinal/lubricant). Short lived shrub/small tree.",
+    "Planting Instructions": "Seeds.",
+    "Maintenance Instructions": "Annual/Perennial varieties.",
+    "Procurement Kanchipuram": "Seeds shops",
+    "Procurement Penukonda/Bangalore": "Seeds shops",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 71,
+    "Category": "Additional Medicinal",
+    "English Name": "Curry Leaf",
+    "Tamil": "Karuveppilai",
+    "Kannada": "Karibevu",
+    "Telugu": "Karivepaku",
+    "Hindi": "Kadi Patta",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Repeat entry.",
+    "Planting Instructions": "",
+    "Maintenance Instructions": "",
+    "Procurement Kanchipuram": "",
+    "Procurement Penukonda/Bangalore": "",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 72,
+    "Category": "Additional Medicinal",
+    "English Name": "Drumstick",
+    "Tamil": "Murungai",
+    "Kannada": "Nugge",
+    "Telugu": "Munaga",
+    "Hindi": "Sahjan",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Repeat entry.",
+    "Planting Instructions": "",
+    "Maintenance Instructions": "",
+    "Procurement Kanchipuram": "",
+    "Procurement Penukonda/Bangalore": "",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 73,
+    "Category": "Additional Medicinal",
+    "English Name": "Guava",
+    "Tamil": "Koyya (கொய்யா)",
+    "Kannada": "Seebe",
+    "Telugu": "Jama",
+    "Hindi": "Amrood",
+    "Korean": "Guava",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Fruit rich in Vit C. Leaves medicinal.",
+    "Planting Instructions": "Layers/Grafts.",
+    "Maintenance Instructions": "Pruning essential.",
+    "Procurement Kanchipuram": "All nurseries",
+    "Procurement Penukonda/Bangalore": "All nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 74,
+    "Category": "Additional Medicinal",
+    "English Name": "Lemon",
+    "Tamil": "Elumichai (எலுமிச்சை)",
+    "Kannada": "Nimbe",
+    "Telugu": "Nimma",
+    "Hindi": "Nimbu",
+    "Korean": "Lemon",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Vit C. Daily use.",
+    "Planting Instructions": "Layers/Seedlings. Canker free.",
+    "Maintenance Instructions": "Micronutrients needed.",
+    "Procurement Kanchipuram": "All nurseries",
+    "Procurement Penukonda/Bangalore": "All nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 75,
+    "Category": "Additional Medicinal",
+    "English Name": "Mahua",
+    "Tamil": "Illupai",
+    "Kannada": "Ippa",
+    "Telugu": "Ippa",
+    "Hindi": "Mahua",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Repeat entry.",
+    "Planting Instructions": "",
+    "Maintenance Instructions": "",
+    "Procurement Kanchipuram": "",
+    "Procurement Penukonda/Bangalore": "",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 76,
+    "Category": "Additional Medicinal",
+    "English Name": "Papaya",
+    "Tamil": "Pappali (பப்பாளி)",
+    "Kannada": "Parangi",
+    "Telugu": "Boppayi",
+    "Hindi": "Papita",
+    "Korean": "Papaya",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Vit A. Digestive. Fast fruit.",
+    "Planting Instructions": "Seeds. Avoid water stagnation.",
+    "Maintenance Instructions": "Viral disease management.",
+    "Procurement Kanchipuram": "Seeds shops; Nurseries",
+    "Procurement Penukonda/Bangalore": "Seeds shops; Nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 77,
+    "Category": "Additional Medicinal",
+    "English Name": "Pomegranate",
+    "Tamil": "Mathulai (மாதுளை)",
+    "Kannada": "Dalimbe",
+    "Telugu": "Danimma",
+    "Hindi": "Anar",
+    "Korean": "Seokryu",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "High market value. Blood health.",
+    "Planting Instructions": "Tissue culture/Layers.",
+    "Maintenance Instructions": "Borer control.",
+    "Procurement Kanchipuram": "Nurseries",
+    "Procurement Penukonda/Bangalore": "Nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 78,
+    "Category": "Additional Medicinal",
+    "English Name": "Seetha (Custard Apple)",
+    "Tamil": "Seetha (சீத்தா)",
+    "Kannada": "Sitaphala",
+    "Telugu": "Sitaphal",
+    "Hindi": "Sharifa",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Hardy dryland fruit. Sweet pulp.",
+    "Planting Instructions": "Seeds/Grafts.",
+    "Maintenance Instructions": "Pruning.",
+    "Procurement Kanchipuram": "Dryland nurseries",
+    "Procurement Penukonda/Bangalore": "Dryland nurseries",
+    "Temple Name (English)": "",
+    "Location (English)": ""
   }
 ];
 
@@ -668,38 +2013,26 @@
             }
         };
 
-        // --- Card Image Component (New for Home Page) ---
+        // --- Card Image Component ---
         const CardImage = ({ plantName }) => {
             const [imageUrl, setImageUrl] = useState(null);
             
             useEffect(() => {
                 let isMounted = true;
                 const getImages = async () => {
-                    // Try "PlantName tree" first, if fails try "PlantName"
                     let images = await fetchWikiImages(`${plantName} tree`);
                     if (images.length === 0) images = await fetchWikiImages(plantName);
-                    
-                    if (isMounted && images.length > 0) {
-                        setImageUrl(images[0]);
-                    }
+                    if (isMounted && images.length > 0) setImageUrl(images[0]);
                 };
                 if (plantName) getImages();
                 return () => { isMounted = false; };
             }, [plantName]);
 
-            if (imageUrl) {
-                return <img src={imageUrl} alt={plantName} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />;
-            }
-
-            return (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-green-50 text-green-800">
-                    <span className="text-4xl mb-2">🌳</span>
-                    <span className="text-xs font-medium opacity-60">No Image</span>
-                </div>
-            );
+            if (imageUrl) return <img src={imageUrl} alt={plantName} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />;
+            return <div className="w-full h-full flex flex-col items-center justify-center bg-green-50 text-green-800"><span className="text-4xl mb-2">🌳</span><span className="text-xs font-medium opacity-60">No Image</span></div>;
         };
 
-        // --- Smart Gallery Component (Improved Fallback) ---
+        // --- Smart Gallery Component ---
         const SmartImageSlot = ({ type, plantName, color, uiLabels }) => {
             const [imageUrl, setImageUrl] = useState(null);
             const [loading, setLoading] = useState(false);
@@ -712,42 +2045,31 @@
                     setLoading(true);
                     setImageUrl(null);
                     setImages([]);
-
-                    // Name cleaning strategies
-                    // 1. "Indian Gooseberry" from "Indian Gooseberry (Amla)"
                     const cleanName = plantName.replace(/\([^)]*\)/g, '').trim(); 
-                    // 2. "Amla" from "Indian Gooseberry (Amla)" - often better for search
                     const parensMatch = plantName.match(/\(([^)]+)\)/);
                     const shortName = parensMatch ? parensMatch[1] : "";
-
-                    // Map UI type to Search terms with singular/plural variations
-                    // We need to use English terms for search regardless of UI language
+                    
                     let searchSuffix = '';
                     if (type === uiLabels.overall) searchSuffix = 'Tree';
-                    else if (type === uiLabels.leaves) searchSuffix = 'Leaves'; // Plural often better
-                    else if (type === uiLabels.flowers) searchSuffix = 'Flowers';
+                    else if (type === uiLabels.leaves) searchSuffix = 'Leaf';
+                    else if (type === uiLabels.flowers) searchSuffix = 'Flower';
                     else if (type === uiLabels.fruits) searchSuffix = 'Fruit';
                     
                     const queries = [];
-                    // Priority 1: Short name + Suffix (e.g., "Amla Fruit")
-                    if (shortName && searchSuffix) queries.push(`${shortName} ${searchSuffix}`);
-                    // Priority 2: Clean English name + Suffix (e.g., "Indian Gooseberry Fruit")
-                    if (searchSuffix) queries.push(`${cleanName} ${searchSuffix}`);
-                    // Priority 3: Just Short Name
+                    if (searchSuffix) {
+                        if (shortName) queries.push(`${shortName} ${searchSuffix}`);
+                        queries.push(`${cleanName} ${searchSuffix}`);
+                    }
                     if (shortName) queries.push(shortName);
-                    // Priority 4: Just Clean Name
                     queries.push(cleanName);
 
                     let foundImages = [];
-                    
-                    // Execute searches sequentially until we find images
                     for (const q of queries) {
-                        if (foundImages.length > 0) break; // Stop if we found something
+                        if (foundImages.length > 0) break;
                         foundImages = await fetchWikiImages(q);
                     }
                     
-                    // Fallback: If looking for specific part and failed, show general plant image
-                    // This prevents empty boxes
+                    // Fallback
                     if (foundImages.length === 0 && searchSuffix) {
                          foundImages = await fetchWikiImages(`${cleanName} tree`);
                     }
@@ -777,43 +2099,13 @@
             return (
                 <div className="flex flex-col h-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative group">
                     <div className={`h-32 ${color} flex items-center justify-center relative overflow-hidden bg-gray-100`}>
-                        {loading ? (
-                            <Icons.Refresh className="animate-spin text-gray-400" />
-                        ) : imageUrl ? (
-                            <>
-                                <img src={imageUrl} alt={type} className="w-full h-full object-cover" />
-                                {images.length > 1 && (
-                                    <button 
-                                        onClick={nextImage}
-                                        className="absolute right-1 bottom-1 bg-black/50 hover:bg-black/70 text-white p-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                                        title="Try next image"
-                                    >
-                                        <Icons.Refresh size={12} />
-                                    </button>
-                                )}
-                            </>
-                        ) : (
-                            <div className="text-4xl opacity-50 flex flex-col items-center">
-                                {type === uiLabels.leaves ? '🍃' : type === uiLabels.flowers ? '🌸' : type === uiLabels.fruits ? '🥭' : '🌳'}
-                            </div>
-                        )}
+                        {loading ? <Icons.Refresh className="animate-spin text-gray-400" /> : imageUrl ? (
+                            <><img src={imageUrl} alt={type} className="w-full h-full object-cover" />{images.length > 1 && <button onClick={nextImage} className="absolute right-1 bottom-1 bg-black/50 hover:bg-black/70 text-white p-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity z-10"><Icons.Refresh size={12} /></button>}</>
+                        ) : <div className="text-4xl opacity-50 flex flex-col items-center">{type === uiLabels.leaves ? '🍃' : type === uiLabels.flowers ? '🌸' : type === uiLabels.fruits ? '🥭' : '🌳'}</div>}
                     </div>
-                    
                     <div className="p-3 flex flex-col justify-between flex-grow">
-                        <div>
-                            <h4 className="font-semibold text-gray-700">{type}</h4>
-                            <p className="text-xs text-gray-500 mt-1">
-                                {imageUrl ? uiLabels.preloaded : uiLabels.featureView}
-                            </p>
-                        </div>
-                        <a 
-                            href={searchUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="mt-3 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded flex items-center justify-center gap-1 transition-colors"
-                        >
-                            <Icons.Search size={14} /> {imageUrl ? uiLabels.searchMore : uiLabels.searchImage}
-                        </a>
+                        <div><h4 className="font-semibold text-gray-700">{type}</h4><p className="text-xs text-gray-500 mt-1">{imageUrl ? uiLabels.preloaded : uiLabels.featureView}</p></div>
+                        <a href={searchUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded flex items-center justify-center gap-1 transition-colors"><Icons.Search size={14} /> {imageUrl ? uiLabels.searchMore : uiLabels.searchImage}</a>
                     </div>
                 </div>
             );
@@ -825,10 +2117,7 @@
             const [response, setResponse] = useState(null);
 
             const systemContext = useMemo(() => {
-                return `You are an agro-forestry expert assistant for a web app called "Native Agro-Forestry Explorer". 
-                You are currently answering questions about a specific plant: "${plant["English Name"]}" (Tamil: ${plant.Tamil}, Hindi: ${plant.Hindi}).
-                Here is the data we have on this plant: ${JSON.stringify(plant)}.
-                Your goal is to be helpful, concise, and encourage native tree planting.`;
+                return `You are an agro-forestry expert. Answer questions about: "${plant["English Name"]}" (Tamil: ${plant.Tamil}, Hindi: ${plant.Hindi}). Data: ${JSON.stringify(plant)}.`;
             }, [plant]);
 
             const handleAsk = async (customPrompt = null) => {
@@ -838,7 +2127,7 @@
                 setResponse(null);
                 if (customPrompt) setQuery(""); 
                 const result = await callGemini(promptText, systemContext, userKey);
-                setResponse(result || "Sorry, I couldn't get an answer. Check your API key.");
+                setResponse(result || "Sorry, I couldn't get an answer. Check your API key or internet.");
                 setLoading(false);
             };
 
@@ -858,32 +2147,26 @@
                         <div className="bg-purple-100 p-2 rounded-full text-purple-600"><Icons.Sparkles /></div>
                         <h3 className="font-bold text-purple-900">AI Smart Companion</h3>
                     </div>
-
-                    <div className="space-y-4">
-                        <div className="flex flex-wrap gap-2">
-                             <button onClick={() => handleAction("calendar")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.careCalendar}</button>
-                            <button onClick={() => handleAction("recipe")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.recipes}</button>
-                            <button onClick={() => handleAction("pest")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.pestControl}</button>
+                    {/* Simplified View for No Key */}
+                    {!userKey ? (
+                        <div className="text-sm text-gray-600 p-2 bg-gray-50 rounded border border-gray-200">
+                            <p>🔒 <strong>Demo Mode:</strong> To chat with the AI Assistant, please add a free Gemini API Key in Settings. Otherwise, feel free to use the Google Translate widget at the top of the page for content translation!</p>
                         </div>
-                        <div className="relative">
-                            <input
-                                type="text"
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
-                                placeholder={userKey ? `${uiLabels.askAi} ${plant["English Name"]}...` : "Enter API Key in settings first"}
-                                disabled={!userKey}
-                                className="w-full pl-4 pr-10 py-3 rounded-lg border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-sm disabled:bg-gray-100 disabled:text-gray-400"
-                            />
-                            <button onClick={() => handleAsk()} disabled={loading || !query.trim() || !userKey} className="absolute right-2 top-2 p-1.5 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50 transition-colors"><Icons.Send size={16} /></button>
-                        </div>
-                        {loading && <div className="flex items-center justify-center py-8 text-purple-600"><Icons.Sparkles className="animate-spin-custom mr-2" /><span className="text-sm font-medium">{uiLabels.consultingAi}</span></div>}
-                        {!loading && response && (
-                            <div className="bg-white rounded-lg p-4 border border-purple-100 text-sm text-gray-800 shadow-inner max-h-64 overflow-y-auto">
-                                <div className="markdown-body whitespace-pre-wrap leading-relaxed">{response}</div>
+                    ) : (
+                        <div className="space-y-4">
+                            <div className="flex flex-wrap gap-2">
+                                 <button onClick={() => handleAction("calendar")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.careCalendar}</button>
+                                <button onClick={() => handleAction("recipe")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.recipes}</button>
+                                <button onClick={() => handleAction("pest")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.pestControl}</button>
                             </div>
-                        )}
-                    </div>
+                            <div className="relative">
+                                <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleAsk()} placeholder={`${uiLabels.askAi} ${plant["English Name"]}...`} className="w-full pl-4 pr-10 py-3 rounded-lg border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-sm" />
+                                <button onClick={() => handleAsk()} disabled={loading || !query.trim()} className="absolute right-2 top-2 p-1.5 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50 transition-colors"><Icons.Send size={16} /></button>
+                            </div>
+                            {loading && <div className="flex items-center justify-center py-8 text-purple-600"><Icons.Sparkles className="animate-spin-custom mr-2" /><span className="text-sm font-medium">{uiLabels.consultingAi}</span></div>}
+                            {!loading && response && <div className="bg-white rounded-lg p-4 border border-purple-100 text-sm text-gray-800 shadow-inner max-h-64 overflow-y-auto"><div className="markdown-body whitespace-pre-wrap leading-relaxed">{response}</div></div>}
+                        </div>
+                    )}
                 </div>
             );
         };
@@ -917,7 +2200,9 @@
 
         const App = () => {
             const [plants, setPlants] = useState(() => {
-                const saved = localStorage.getItem("native_plants_data");
+                // Use HARDCODED INITIAL_DATA (Full Set) as primary source
+                // Check if user has uploaded a CUSTOM file (optional override)
+                const saved = localStorage.getItem("native_plants_data_custom");
                 return saved ? JSON.parse(saved) : INITIAL_DATA;
             });
             const [selectedPlant, setSelectedPlant] = useState(null);
@@ -927,14 +2212,17 @@
             const [userApiKey, setUserApiKey] = useState(localStorage.getItem("gemini_api_key") || "");
             const [showSettings, setShowSettings] = useState(false);
             const [currentLanguage, setCurrentLanguage] = useState("English");
-            const [googleTranslateEnabled, setGoogleTranslateEnabled] = useState(localStorage.getItem("enable_google_translate") === "true");
-            // Cache for translated content to avoid re-fetching
+            const [googleTranslateEnabled, setGoogleTranslateEnabled] = useState(localStorage.getItem("enable_google_translate") !== "false"); // Default to true if not set
             const [translatedContent, setTranslatedContent] = useState({}); 
             const [isTranslating, setIsTranslating] = useState(false);
 
-            useEffect(() => { localStorage.setItem("native_plants_data", JSON.stringify(plants)); }, [plants]);
+            // Only persist if it's NOT the initial data (user uploaded custom)
+            useEffect(() => { 
+                if (JSON.stringify(plants) !== JSON.stringify(INITIAL_DATA)) {
+                    localStorage.setItem("native_plants_data_custom", JSON.stringify(plants)); 
+                }
+            }, [plants]);
 
-            // Toggle Google Translate Widget
             useEffect(() => {
                 if (googleTranslateEnabled) {
                     if (!document.getElementById("google_translate_script")) {
@@ -957,7 +2245,6 @@
                 if (!newState) alert("Please refresh the page to fully remove the widget.");
             };
 
-            // AI Content Translation Logic
             const translateCurrentPlant = async () => {
                 if (!userApiKey) { alert("Please add your Gemini API Key in Settings to use AI Translation."); return; }
                 if (!selectedPlant) return;
@@ -985,11 +2272,10 @@
                             [`${plantId}_${lang}`]: result
                         }));
                     } catch (e) {
-                        console.error("Translation parse error", e);
-                        alert("Error parsing translation. Please try again.");
+                        alert("Translation parse error. Try again.");
                     }
                 } else {
-                    alert("Translation failed. Please check your API key.");
+                    alert("Translation failed. Check API key.");
                 }
                 setIsTranslating(false);
             };
@@ -1027,7 +2313,7 @@
                 document.body.removeChild(link);
             };
 
-            const handleResetData = () => { if (confirm("Reset to default?")) { setPlants(INITIAL_DATA); localStorage.removeItem("native_plants_data"); } };
+            const handleResetData = () => { if (confirm("Reset to original full list?")) { setPlants(INITIAL_DATA); localStorage.removeItem("native_plants_data_custom"); } };
             const onDrop = (e) => { e.preventDefault(); setIsDragging(false); const file = e.dataTransfer.files[0]; if (file) handleFileUpload(file); };
 
             const languages = [ { code: "English", label: "English", key: "English Name" }, { code: "Tamil", label: "தமிழ்", key: "Tamil" }, { code: "Kannada", label: "ಕನ್ನಡ", key: "Kannada" }, { code: "Telugu", label: "తెలుగు", key: "Telugu" }, { code: "Korean", label: "한국어", key: "Korean" } ];
@@ -1042,7 +2328,6 @@
             
             const uiLabels = TRANSLATIONS[currentLanguage];
             
-            // Get text content (translated or original)
             const getPlantContent = (field) => {
                 if (currentLanguage === "English") return selectedPlant[field];
                 const cacheKey = `${selectedPlant.id}_${currentLanguage}`;
@@ -1056,7 +2341,7 @@
                 if (translatedContent[cacheKey] && translatedContent[cacheKey][mapping[field]]) {
                     return translatedContent[cacheKey][mapping[field]];
                 }
-                return selectedPlant[field]; // Fallback to English
+                return selectedPlant[field]; 
             };
 
             return (
