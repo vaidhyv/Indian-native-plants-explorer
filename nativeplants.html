@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Native Agro-Forestry Explorer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- PapaParse for CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:wght@400;700&family=Noto+Sans+Tamil&family=Noto+Sans+Kannada&family=Noto+Sans+Telugu&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Noto Sans', sans-serif; background-color: #f0fdf4; }
+        .serif { font-family: 'Noto Serif', serif; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Language Fonts */
+        .font-tamil { font-family: 'Noto Sans Tamil', sans-serif; }
+        .font-kannada { font-family: 'Noto Sans Kannada', sans-serif; }
+        .font-telugu { font-family: 'Noto Sans Telugu', sans-serif; }
+        .font-korean { font-family: 'Noto Sans KR', sans-serif; }
+        
+        /* Google Translate Widget Styling Overrides */
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0px !important; }
+        #google_translate_element select {
+            background-color: #166534;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 4px;
+            font-family: 'Noto Sans', sans-serif;
+        }
+        
+        /* Custom Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-spin-custom { animation: spin 1s linear infinite; }
+        
+        .markdown-body ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+        .markdown-body ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
+        .markdown-body p { margin-bottom: 0.75rem; }
+        .markdown-body strong { font-weight: 600; color: #166534; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+        // --- UI Translations ---
+        const TRANSLATIONS = {
+            "English": {
+                title: "Native Agro-Forestry",
+                subtitle: "Interactive Database for Indian Native Species",
+                searchPlaceholder: "Search plants...",
+                uploadCsv: "Upload CSV",
+                downloadCsv: "Download CSV",
+                resetData: "Reset Data",
+                category: "Category",
+                nakshatra: "Nakshatra (Star)",
+                birdStatus: "Bird Status",
+                highlights: "Highlights & Benefits",
+                plantingGuide: "Planting Guide",
+                maintenance: "Maintenance",
+                procurement: "Procurement Sources",
+                kanchipuram: "Kanchipuram Region",
+                penukonda: "Penukonda / Anantapur",
+                readMore: "Read more on Wikipedia",
+                temple: "Temple",
+                location: "Location",
+                cultural: "Cultural Significance & Nakshatra",
+                features: "Distinguishing Features",
+                leaves: "Leaves",
+                flowers: "Flowers",
+                fruits: "Fruits",
+                overall: "Bark/Overall",
+                preloaded: "Pre-loaded from Web",
+                featureView: "Feature view",
+                searchMore: "Search More",
+                searchImage: "Search Image",
+                viewDetails: "View Details →",
+                topPick: "Top Pick",
+                star: "Star",
+                askAi: "Ask about",
+                consultingAi: "Consulting AI...",
+                careCalendar: "📅 Care Calendar",
+                recipes: "🍲 Recipes",
+                pestControl: "🐛 Pest Control",
+                translateContent: "✨ Translate Content to",
+                translating: "Translating..."
+            },
+            "Tamil": {
+                title: "நாட்டு வேளாண் காடுகள்",
+                subtitle: "இந்திய நாட்டு மரங்களுக்கான தரவுத்தளம்",
+                searchPlaceholder: "தாவரங்களைத் தேடுக...",
+                uploadCsv: "CSV பதிவேற்றவும்",
+                downloadCsv: "CSV பதிவிறக்கவும்",
+                resetData: "தரவை மீட்டமை",
+                category: "வகை",
+                nakshatra: "நட்சத்திரம்",
+                birdStatus: "பறவைகள் நிலை",
+                highlights: "சிறப்பம்சங்கள் & நன்மைகள்",
+                plantingGuide: "நடவு வழிகாட்டி",
+                maintenance: "பராமரிப்பு",
+                procurement: "கொள்முதல் மூலங்கள்",
+                kanchipuram: "காஞ்சிபுரம் பகுதி",
+                penukonda: "பெனுகொண்டா / அனந்தபூர்",
+                readMore: "விக்கிபீடியாவில் மேலும் படிக்க",
+                temple: "கோவில்",
+                location: "இடம்",
+                cultural: "கலாச்சார முக்கியத்துவம் & நட்சத்திரம்",
+                features: "தனித்துவமான அம்சங்கள்",
+                leaves: "இலைகள்",
+                flowers: "மலர்கள்",
+                fruits: "பழங்கள்",
+                overall: "மரம்/பொது",
+                preloaded: "இணையத்திலிருந்து ஏற்றப்பட்டது",
+                featureView: "அம்சம் பார்வை",
+                searchMore: "மேலும் தேடுக",
+                searchImage: "படம் தேடுக",
+                viewDetails: "விவரங்களைக் காண்க →",
+                topPick: "சிறந்த தேர்வு",
+                star: "நட்சத்திரம்",
+                askAi: "கேள்வி கேட்க",
+                consultingAi: "AI ஆலோசனை...",
+                careCalendar: "📅 பராமரிப்பு நாள்காட்டி",
+                recipes: "🍲 சமையல் குறிப்புகள்",
+                pestControl: "🐛 பூச்சி கட்டுப்பாடு",
+                translateContent: "✨ உள்ளடக்கத்தை மொழிபெயர்க்கவும்",
+                translating: "மொழிபெயர்க்கிறது..."
+            },
+            "Kannada": {
+                title: "ದೇಶೀಯ ಕೃಷಿ ಅರಣ್ಯ",
+                subtitle: "ಭಾರತೀಯ ದೇಶೀಯ ಪ್ರಭೇದಗಳಿಗಾಗಿ ಸಂವಾದಾತ್ಮಕ ಡೇಟಾಬೇಸ್",
+                searchPlaceholder: "ಸಸ್ಯಗಳನ್ನು ಹುಡುಕಿ...",
+                uploadCsv: "CSV ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+                downloadCsv: "CSV ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+                resetData: "ಡೇಟಾ ಮರುಹೊಂದಿಸಿ",
+                category: "ವರ್ಗ",
+                nakshatra: "ನಕ್ಷತ್ರ",
+                birdStatus: "ಪಕ್ಷಿ ಸ್ಥಿತಿ",
+                highlights: "ಮುಖ್ಯಾಂಶಗಳು & ಪ್ರಯೋಜನಗಳು",
+                plantingGuide: "ನೆಡುವಿಕೆ ಮಾರ್ಗದರ್ಶಿ",
+                maintenance: "ನಿರ್ವಹಣೆ",
+                procurement: "ಖರೀದಿ ಮೂಲಗಳು",
+                kanchipuram: "ಕಾಂಚಿಪುರಂ ಪ್ರದೇಶ",
+                penukonda: "ಪೆನುಕೊಂಡ / ಅನಂತಪುರ",
+                readMore: "ವಿಕಿಪೀಡಿಯಾದಲ್ಲಿ ಇನ್ನಷ್ಟು ಓದಿ",
+                temple: "ದೇವಸ್ಥಾನ",
+                location: "ಸ್ಥಳ",
+                cultural: "ಸಾಂಸ್ಕೃತಿಕ ಮಹತ್ವ & ನಕ್ಷತ್ರ",
+                features: "ವಿಶಿಷ್ಟ ಲಕ್ಷಣಗಳು",
+                leaves: "ಎಲೆಗಳು",
+                flowers: "ಹೂಗಳು",
+                fruits: "ಹಣ್ಣುಗಳು",
+                overall: "ಮರ/ಒಟ್ಟಾರೆ",
+                preloaded: "ವೆಬ್‌ನಿಂದ ಲೋಡ್ ಮಾಡಲಾಗಿದೆ",
+                featureView: "ವೈಶಿಷ್ಟ್ಯ ನೋಟ",
+                searchMore: "ಇನ್ನಷ್ಟು ಹುಡುಕಿ",
+                searchImage: "ಚಿತ್ರ ಹುಡುಕಿ",
+                viewDetails: "ವಿವರಗಳನ್ನು ನೋಡಿ →",
+                topPick: "ಅತ್ಯುತ್ತಮ ಆಯ್ಕೆ",
+                star: "ನಕ್ಷತ್ರ",
+                askAi: "ಬಗ್ಗೆ ಕೇಳಿ",
+                consultingAi: "AI ಸಮಾಲೋಚನೆ...",
+                careCalendar: "📅 ಆರೈಕೆ ಕ್ಯಾಲೆಂಡರ್",
+                recipes: "🍲 ಪಾಕವಿಧಾನಗಳು",
+                pestControl: "🐛 ಕೀಟ ನಿಯಂತ್ರಣ",
+                translateContent: "✨ ವಿಷಯವನ್ನು ಭಾಷಾಂತರಿಸಿ",
+                translating: "ಭಾಷಾಂತರಿಸಲಾಗುತ್ತಿದೆ..."
+            },
+            "Telugu": {
+                title: "దేశీయ వ్యవసాయ అటవీ",
+                subtitle: "భారతీయ దేశీయ జాతుల కోసం ఇంటరాక్టివ్ డేటాబేస్",
+                searchPlaceholder: "మొక్కలను శోధించండి...",
+                uploadCsv: "CSV అప్‌లోడ్ చేయండి",
+                downloadCsv: "CSV డౌన్‌లోడ్ చేయండి",
+                resetData: "డేటాను రీసెట్ చేయండి",
+                category: "వర్గం",
+                nakshatra: "నక్షత్రం",
+                birdStatus: "పక్షుల స్థితి",
+                highlights: "ముఖ్యాంశాలు & ప్రయోజనాలు",
+                plantingGuide: "నాటడం గైడ్",
+                maintenance: "నిర్వహణ",
+                procurement: "సేకరణ వనరులు",
+                kanchipuram: "కాంచీపురం ప్రాంతం",
+                penukonda: "పెనుకొండ / అనంతపురం",
+                readMore: "వికీపీడియాలో మరింత చదవండి",
+                temple: "దేవాలయం",
+                location: "స్థానం",
+                cultural: "సాంస్కృతిక ప్రాముఖ్యత & నక్షత్రం",
+                features: "విశిష్ట లక్షణాలు",
+                leaves: "ఆకులు",
+                flowers: "పువ్వులు",
+                fruits: "పండ్లు",
+                overall: "చెట్టు/మొత్తం",
+                preloaded: "వెబ్ నుండి లోడ్ చేయబడింది",
+                featureView: "ఫీచర్ వీక్షణం",
+                searchMore: "మరింత శోధించండి",
+                searchImage: "చిత్రం శోధించండి",
+                viewDetails: "వివరాలను చూడండి →",
+                topPick: "అగ్ర ఎంపిక",
+                star: "నక్షత్రం",
+                askAi: "గురించి అడగండి",
+                consultingAi: "AIని సంప్రదిస్తోంది...",
+                careCalendar: "📅 సంరక్షణ క్యాలెండర్",
+                recipes: "🍲 వంటకాలు",
+                pestControl: "🐛 తెగులు నివారణ",
+                translateContent: "✨ కంటెంట్‌ని అనువదించండి",
+                translating: "అనువదిస్తోంది..."
+            },
+            "Korean": {
+                title: "토종 농림업 탐색기",
+                subtitle: "인도 토종 종을 위한 대화형 데이터베이스",
+                searchPlaceholder: "식물 검색...",
+                uploadCsv: "CSV 업로드",
+                downloadCsv: "CSV 다운로드",
+                resetData: "데이터 재설정",
+                category: "범주",
+                nakshatra: "낙샤트라 (별)",
+                birdStatus: "조류 친화 상태",
+                highlights: "주요 특징 및 이점",
+                plantingGuide: "심기 가이드",
+                maintenance: "유지 관리",
+                procurement: "조달 출처",
+                kanchipuram: "칸치푸람 지역",
+                penukonda: "페누콘다 / 아난타푸르",
+                readMore: "위키백과에서 더 읽기",
+                temple: "사원",
+                location: "위치",
+                cultural: "문화적 중요성 및 낙샤트라",
+                features: "구별되는 특징",
+                leaves: "잎",
+                flowers: "꽃",
+                fruits: "열매",
+                overall: "나무/전체",
+                preloaded: "웹에서 미리 로드됨",
+                featureView: "특징 보기",
+                searchMore: "더 검색",
+                searchImage: "이미지 검색",
+                viewDetails: "상세 보기 →",
+                topPick: "최고의 선택",
+                star: "별",
+                askAi: "에 대해 질문하기",
+                consultingAi: "AI 상담 중...",
+                careCalendar: "📅 관리 달력",
+                recipes: "🍲 레시피",
+                pestControl: "🐛 해충 방제",
+                translateContent: "✨ 콘텐츠 번역",
+                translating: "번역 중..."
+            }
+        };
+
+        // --- Expanded Baseline Data (20+ Trees) with Nakshatra Fields ---
+        const INITIAL_DATA = [
+            // Fruit Trees
+            {
+                id: 1, Category: "Legacy Fruit Trees", "English Name": "Indian Gooseberry (Amla)", Tamil: "Nelli", Kannada: "Amalaki", Telugu: "Usirikai", Hindi: "Amla", Korean: "Indogwaja",
+                "Specific Highlights/Benefits": "High Vitamin C, medicinal uses.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Bharani", "Temple Name (English)": "Nellai Iswara Temple", "Location (English)": "Tirunelveli"
+            },
+            {
+                id: 2, Category: "Legacy Fruit Trees", "English Name": "Coconut", Tamil: "Thennai", Kannada: "Thengu", Telugu: "Kobbari", Hindi: "Nariyal", Korean: "Yeonagwaja",
+                "Specific Highlights/Benefits": "Kalpavriksha - every part useful.", "Bird-Friendly Status": "High"
+            },
+            {
+                id: 3, Category: "Legacy Fruit Trees", "English Name": "Jackfruit", Tamil: "Pala", Kannada: "Halasu", Telugu: "Panasa", Hindi: "Kathal", Korean: "Baramil",
+                "Specific Highlights/Benefits": "Largest tree-borne fruit, timber value.", "Bird-Friendly Status": "High", "Nakshatra": "Uttradam", "Temple Name (English)": "Ekambareswara Temple", "Location (English)": "Kanchipuram"
+            },
+            {
+                id: 4, Category: "Legacy Fruit Trees", "English Name": "Mango", Tamil: "Maa", Kannada: "Mavu", Telugu: "Mamidi", Hindi: "Aam", Korean: "Mango",
+                "Specific Highlights/Benefits": "King of fruits, dense shade.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Purvabhadra", "Temple Name (English)": "Ranganatha Swami Temple", "Location (English)": "Ranganathapuram, Tiruvarur"
+            },
+            {
+                id: 5, Category: "Legacy Fruit Trees", "English Name": "Tamarind", Tamil: "Puli", Kannada: "Hunase", Telugu: "Chinta", Hindi: "Imli", Korean: "Tamarindeu",
+                "Specific Highlights/Benefits": "Long lived, culinary acidulant.", "Bird-Friendly Status": "High"
+            },
+            {
+                id: 6, Category: "Legacy Fruit Trees", "English Name": "Jamun", Tamil: "Naval", Kannada: "Nerale", Telugu: "Neredu", Hindi: "Jamun", Korean: "Jamun",
+                "Specific Highlights/Benefits": "Controls diabetes, timber resistant to water.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Rohini", "Temple Name (English)": "Jambu Keshwara Temple", "Location (English)": "Tiruvanaikaval, Tiruchirappalli"
+            },
+            {
+                id: 7, Category: "Legacy Fruit Trees", "English Name": "Wood Apple", Tamil: "Vila", Kannada: "Belada", Telugu: "Velaga", Hindi: "Kaitha", Korean: "Na",
+                "Specific Highlights/Benefits": "Sacred tree, digestive fruit.", "Bird-Friendly Status": "Moderate", "Nakshatra": "Vishakha", "Temple Name (English)": "Muthukumaraswami Temple", "Location (English)": "Panmozhi, Tirunelveli"
+            },
+            
+            // Timber/Forest Trees
+            {
+                id: 8, Category: "Timber/Forest", "English Name": "Teak", Tamil: "Thekku", Kannada: "Seguni", Telugu: "Teku", Hindi: "Sagwan", Korean: "Tikeu",
+                "Specific Highlights/Benefits": "King of timber, high commercial value.", "Bird-Friendly Status": "Low"
+            },
+            {
+                id: 9, Category: "Timber/Forest", "English Name": "Red Sanders", Tamil: "Semmaram", Kannada: "Rakta Chandana", Telugu: "Erra Chandanam", Hindi: "Lal Chandan", Korean: "Na",
+                "Specific Highlights/Benefits": "Endemic to Eastern Ghats, highly prized wood.", "Bird-Friendly Status": "Moderate"
+            },
+            {
+                id: 10, Category: "Timber/Forest", "English Name": "Sandalwood", Tamil: "Chandanam", Kannada: "Srigandha", Telugu: "Gandham", Hindi: "Chandan", Korean: "Baekdan",
+                "Specific Highlights/Benefits": "Fragrant heartwood, expensive oil.", "Bird-Friendly Status": "Moderate"
+            },
+            {
+                id: 11, Category: "Timber/Forest", "English Name": "Neem", Tamil: "Vembu", Kannada: "Bevu", Telugu: "Vepa", Hindi: "Neem", Korean: "Nim",
+                "Specific Highlights/Benefits": "Natural pesticide, air purifier, medicinal.", "Bird-Friendly Status": "High", "Nakshatra": "Uttarabhadra", "Temple Name (English)": "Sahasra Lakshmeeswarar Temple", "Location (English)": "Theeyattur, Pudukkottai"
+            },
+            {
+                id: 12, Category: "Timber/Forest", "English Name": "Pongamia", Tamil: "Pungai", Kannada: "Honge", Telugu: "Kanuga", Hindi: "Karanj", Korean: "Na",
+                "Specific Highlights/Benefits": "Bio-fuel source, nitrogen fixer.", "Bird-Friendly Status": "High"
+            },
+             {
+                id: 13, Category: "Timber/Forest", "English Name": "Bamboo", Tamil: "Moongil", Kannada: "Bidiru", Telugu: "Veduru", Hindi: "Baans", Korean: "Daenamu",
+                "Specific Highlights/Benefits": "Fast growing, multiple uses, soil binder.", "Bird-Friendly Status": "High", "Nakshatra": "Punarvasu", "Temple Name (English)": "Abhatshayeswara Temple", "Location (English)": "Irumbai, Viluppuram"
+            },
+            
+            // Medicinal/Sacred
+            {
+                id: 14, Category: "Medicinal/Heritage", "English Name": "Mahua", Tamil: "Illupai", Kannada: "Ippa", Telugu: "Ippa", Hindi: "Mahua", Korean: "Na",
+                "Specific Highlights/Benefits": "Flowers for alcohol/food, seeds for oil.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Revati", "Temple Name (English)": "Kailasha Natha Temple", "Location (English)": "Karukudi, Tiruvarur"
+            },
+            {
+                id: 15, Category: "Medicinal/Heritage", "English Name": "Peepal", Tamil: "Arasu", Kannada: "Arali", Telugu: "Ravi", Hindi: "Peepal", Korean: "Bodikusu",
+                "Specific Highlights/Benefits": "Sacred, releases oxygen at night.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Pushya", "Temple Name (English)": "Akshaya Pureeshwara Temple", "Location (English)": "Vilankulam, Tanjore"
+            },
+            {
+                id: 16, Category: "Medicinal/Heritage", "English Name": "Banyan", Tamil: "Aalam", Kannada: "Aalada", Telugu: "Marri", Hindi: "Bargad", Korean: "Banyan",
+                "Specific Highlights/Benefits": "National tree, supports vast ecosystem.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Magha", "Temple Name (English)": "Mahalingeshwara Temple", "Location (English)": "Tiruvarambur, Tiruchirappalli"
+            },
+             {
+                id: 17, Category: "Medicinal/Heritage", "English Name": "Arjun", Tamil: "Marudham", Kannada: "Matti", Telugu: "Tella Maddi", Hindi: "Arjun", Korean: "Na",
+                "Specific Highlights/Benefits": "Cardio-tonic bark, river bank stabilizer.", "Bird-Friendly Status": "High", "Nakshatra": "Swati", "Temple Name (English)": "Tantondreeswara Temple", "Location (English)": "Chittukadu, Chennai"
+            },
+             {
+                id: 18, Category: "Medicinal/Heritage", "English Name": "Baheda", Tamil: "Thandrikai", Kannada: "Tare", Telugu: "Tanikaya", Hindi: "Baheda", Korean: "Na",
+                "Specific Highlights/Benefits": "Part of Triphala, medicinal fruits.", "Bird-Friendly Status": "High"
+            },
+            {
+                id: 19, Category: "Medicinal/Heritage", "English Name": "Curry Leaf", Tamil: "Karuveppilai", Kannada: "Karibevu", Telugu: "Karivepaku", Hindi: "Kadi Patta", Korean: "Keori",
+                "Specific Highlights/Benefits": "Essential culinary spice, digestive.", "Bird-Friendly Status": "Moderate"
+            },
+             {
+                id: 20, Category: "Medicinal/Heritage", "English Name": "Drumstick", Tamil: "Murungai", Kannada: "Nugge", Telugu: "Munaga", Hindi: "Sahjan", Korean: "Deureom-seutik",
+                "Specific Highlights/Benefits": "Superfood, vitamin rich leaves and pods.", "Bird-Friendly Status": "Moderate"
+            }
+        ];
+
+        // --- Icons ---
+        const Icons = {
+            Leaf: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.5 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>,
+            Flower: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 7.5a4.5 4.5 0 1 1 4.5 4.5M12 7.5A4.5 4.5 0 1 0 7.5 12M12 7.5V9m-4.5 3a4.5 4.5 0 1 1 4.5-4.5M7.5 12H9m3 4.5a4.5 4.5 0 1 1-4.5-4.5M12 16.5V15m4.5-3a4.5 4.5 0 1 1-4.5 4.5M16.5 12H15"/></svg>,
+            Bird: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg>,
+            MapPin: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
+            Search: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+            Upload: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>,
+            Download: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>,
+            X: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
+            Droplet: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>,
+            Sun: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>,
+            Settings: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.47a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
+            ExternalLink: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>,
+            Sparkles: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 3v4"/><path d="M3 5h4"/><path d="M3 9h4"/></svg>,
+            Bot: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>,
+            Send: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+            Refresh: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>,
+            Save: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>,
+            Star: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+            Globe: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+            Translate: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+        };
+
+        // --- Helper Components ---
+        const Badge = ({ children, color = "green" }) => {
+            const colors = {
+                green: "bg-green-100 text-green-800 border-green-200",
+                blue: "bg-blue-100 text-blue-800 border-blue-200",
+                yellow: "bg-yellow-100 text-yellow-800 border-yellow-200",
+                red: "bg-red-100 text-red-800 border-red-200",
+                purple: "bg-purple-100 text-purple-800 border-purple-200",
+                orange: "bg-orange-100 text-orange-800 border-orange-200"
+            };
+            return (
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${colors[color] || colors.green}`}>
+                    {children}
+                </span>
+            );
+        };
+
+        const DetailRow = ({ label, value, icon: Icon }) => (
+            <div className="py-2 border-b border-gray-100 last:border-0">
+                <div className="flex items-start">
+                    {Icon && <div className="mt-1 mr-2 text-gray-500"><Icon /></div>}
+                    <div>
+                        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{label}</div>
+                        <div className="text-gray-800 text-sm mt-0.5">{value || "N/A"}</div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const callGemini = async (prompt, systemContext, userKey, jsonMode = false) => {
+            if (!userKey) return null;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${userKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemContext }] },
+                generationConfig: jsonMode ? { responseMimeType: "application/json" } : undefined
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text;
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                return null;
+            }
+        };
+
+        const fetchWikiImages = async (query) => {
+            // Increased limit to 15 to find better candidates
+            const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=15&gsrsearch=${encodeURIComponent(query)}&prop=imageinfo&iiprop=url`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (!data.query || !data.query.pages) return [];
+                return Object.values(data.query.pages)
+                    .map(page => page.imageinfo?.[0]?.url)
+                    .filter(url => url && (url.toLowerCase().endsWith('.jpg') || url.toLowerCase().endsWith('.jpeg') || url.toLowerCase().endsWith('.png')));
+            } catch (e) {
+                console.error("Wiki Image Fetch Error", e);
+                return [];
+            }
+        };
+
+        // --- Card Image Component ---
+        const CardImage = ({ plantName }) => {
+            const [imageUrl, setImageUrl] = useState(null);
+            
+            useEffect(() => {
+                let isMounted = true;
+                const getImages = async () => {
+                    let images = await fetchWikiImages(`${plantName} tree`);
+                    if (images.length === 0) images = await fetchWikiImages(plantName);
+                    if (isMounted && images.length > 0) setImageUrl(images[0]);
+                };
+                if (plantName) getImages();
+                return () => { isMounted = false; };
+            }, [plantName]);
+
+            if (imageUrl) return <img src={imageUrl} alt={plantName} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />;
+            return <div className="w-full h-full flex flex-col items-center justify-center bg-green-50 text-green-800"><span className="text-4xl mb-2">🌳</span><span className="text-xs font-medium opacity-60">No Image</span></div>;
+        };
+
+        // --- Smart Gallery Component ---
+        const SmartImageSlot = ({ type, plantName, color, uiLabels }) => {
+            const [imageUrl, setImageUrl] = useState(null);
+            const [loading, setLoading] = useState(false);
+            const [images, setImages] = useState([]);
+            const [currentIndex, setCurrentIndex] = useState(0);
+            
+            useEffect(() => {
+                let isMounted = true;
+                const getImages = async () => {
+                    setLoading(true);
+                    setImageUrl(null);
+                    setImages([]);
+                    // Use a broader search query if specific part not found
+                    // Clean name: remove parens and use as base
+                    const cleanName = plantName.replace(/\([^)]*\)/g, '').trim(); 
+                    const parensMatch = plantName.match(/\(([^)]+)\)/);
+                    const shortName = parensMatch ? parensMatch[1] : "";
+                    
+                    // Determine search suffix based on type
+                    let searchSuffix = '';
+                    if (type === uiLabels.overall) searchSuffix = 'Tree';
+                    else if (type === uiLabels.leaves) searchSuffix = 'Leaves'; // Plural often better
+                    else if (type === uiLabels.flowers) searchSuffix = 'Flowers';
+                    else if (type === uiLabels.fruits) searchSuffix = 'Fruit';
+                    
+                    const queries = [];
+                    // Priority 1: Short name + Suffix (e.g., "Amla Fruit")
+                    if (shortName && searchSuffix) queries.push(`${shortName} ${searchSuffix}`);
+                    // Priority 2: Clean English name + Suffix (e.g., "Indian Gooseberry Fruit")
+                    if (searchSuffix) queries.push(`${cleanName} ${searchSuffix}`);
+                    // Priority 3: Scientific name if available (not in current dataset, but good practice)
+                    // Priority 4: Just Short Name
+                    if (shortName) queries.push(shortName);
+                    // Priority 5: Just Clean Name
+                    queries.push(cleanName);
+
+                    let foundImages = [];
+                    for (const q of queries) {
+                        if (foundImages.length > 0) break;
+                        foundImages = await fetchWikiImages(q);
+                    }
+                    
+                    // Fallback: If looking for specific part and failed, show general plant image
+                    if (foundImages.length === 0 && searchSuffix) {
+                         foundImages = await fetchWikiImages(`${cleanName} tree`);
+                    }
+
+                    if (isMounted) {
+                        if (foundImages.length > 0) {
+                            setImages(foundImages);
+                            setImageUrl(foundImages[0]);
+                        }
+                        setLoading(false);
+                    }
+                };
+                getImages();
+                return () => { isMounted = false; };
+            }, [plantName, type, uiLabels]);
+
+            const nextImage = (e) => {
+                e.stopPropagation();
+                if (images.length === 0) return;
+                const nextIdx = (currentIndex + 1) % images.length;
+                setCurrentIndex(nextIdx);
+                setImageUrl(images[nextIdx]);
+            };
+
+            const searchUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`${plantName} ${type}`)}`;
+
+            return (
+                <div className="flex flex-col h-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative group">
+                    <div className={`h-32 ${color} flex items-center justify-center relative overflow-hidden bg-gray-100`}>
+                        {loading ? <Icons.Refresh className="animate-spin text-gray-400" /> : imageUrl ? (
+                            <><img src={imageUrl} alt={type} className="w-full h-full object-cover" />{images.length > 1 && <button onClick={nextImage} className="absolute right-1 bottom-1 bg-black/50 hover:bg-black/70 text-white p-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity z-10"><Icons.Refresh size={12} /></button>}</>
+                        ) : <div className="text-4xl opacity-50 flex flex-col items-center">{type === uiLabels.leaves ? '🍃' : type === uiLabels.flowers ? '🌸' : type === uiLabels.fruits ? '🥭' : '🌳'}</div>}
+                    </div>
+                    <div className="p-3 flex flex-col justify-between flex-grow">
+                        <div><h4 className="font-semibold text-gray-700">{type}</h4><p className="text-xs text-gray-500 mt-1">{imageUrl ? uiLabels.preloaded : uiLabels.featureView}</p></div>
+                        <a href={searchUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded flex items-center justify-center gap-1 transition-colors"><Icons.Search size={14} /> {imageUrl ? uiLabels.searchMore : uiLabels.searchImage}</a>
+                    </div>
+                </div>
+            );
+        };
+
+        const AIAssistant = ({ plant, userKey, uiLabels }) => {
+            const [query, setQuery] = useState("");
+            const [loading, setLoading] = useState(false);
+            const [response, setResponse] = useState(null);
+
+            const systemContext = useMemo(() => {
+                return `You are an agro-forestry expert. Answer questions about: "${plant["English Name"]}" (Tamil: ${plant.Tamil}, Hindi: ${plant.Hindi}). Data: ${JSON.stringify(plant)}.`;
+            }, [plant]);
+
+            const handleAsk = async (customPrompt = null) => {
+                const promptText = customPrompt || query;
+                if (!promptText.trim()) return;
+                setLoading(true);
+                setResponse(null);
+                if (customPrompt) setQuery(""); 
+                const result = await callGemini(promptText, systemContext, userKey);
+                setResponse(result || "Sorry, I couldn't get an answer. Check your API key.");
+                setLoading(false);
+            };
+
+            const handleAction = (actionType) => {
+                let prompt = "";
+                switch(actionType) {
+                    case "calendar": prompt = "Create a seasonal care calendar for this plant in India."; break;
+                    case "recipe": prompt = "Suggest 3 traditional Indian recipes (culinary or home remedy) using parts of this plant."; break;
+                    case "pest": prompt = "What are common pests or diseases for this tree in India, and what are organic/natural ways to treat them?"; break;
+                }
+                handleAsk(prompt);
+            };
+
+            return (
+                <div className="bg-purple-50 rounded-xl p-5 border border-purple-100 shadow-sm mt-6">
+                    <div className="flex items-center gap-2 mb-4 border-b border-purple-200 pb-2">
+                        <div className="bg-purple-100 p-2 rounded-full text-purple-600"><Icons.Sparkles /></div>
+                        <h3 className="font-bold text-purple-900">AI Smart Companion</h3>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="flex flex-wrap gap-2">
+                             <button onClick={() => handleAction("calendar")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.careCalendar}</button>
+                            <button onClick={() => handleAction("recipe")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.recipes}</button>
+                            <button onClick={() => handleAction("pest")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.pestControl}</button>
+                        </div>
+                        <div className="relative">
+                            <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleAsk()} placeholder={userKey ? `${uiLabels.askAi} ${plant["English Name"]}...` : "Enter API Key in settings first"} disabled={!userKey} className="w-full pl-4 pr-10 py-3 rounded-lg border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-sm disabled:bg-gray-100 disabled:text-gray-400" />
+                            <button onClick={() => handleAsk()} disabled={loading || !query.trim() || !userKey} className="absolute right-2 top-2 p-1.5 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50 transition-colors"><Icons.Send size={16} /></button>
+                        </div>
+                        {loading && <div className="flex items-center justify-center py-8 text-purple-600"><Icons.Sparkles className="animate-spin-custom mr-2" /><span className="text-sm font-medium">{uiLabels.consultingAi}</span></div>}
+                        {!loading && response && <div className="bg-white rounded-lg p-4 border border-purple-100 text-sm text-gray-800 shadow-inner max-h-64 overflow-y-auto"><div className="markdown-body whitespace-pre-wrap leading-relaxed">{response}</div></div>}
+                    </div>
+                </div>
+            );
+        };
+
+        const SettingsModal = ({ onClose, onSave, currentKey, googleTranslate, toggleGoogleTranslate }) => {
+            const [key, setKey] = useState(currentKey || "");
+            return (
+                <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4" onClick={onClose}>
+                    <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl" onClick={e => e.stopPropagation()}>
+                        <h3 className="text-xl font-bold mb-4 flex items-center gap-2"><Icons.Settings /> App Settings</h3>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Gemini API Key</label>
+                            <input type="password" value={key} onChange={(e) => setKey(e.target.value)} className="w-full p-2 border rounded focus:ring-2 focus:ring-green-500" placeholder="Paste your API key here..." />
+                            <p className="text-xs text-gray-500 mt-2">Required for AI features & Translation. Get a free key from <a href="https://aistudio.google.com/app/apikey" target="_blank" className="text-blue-600 underline">Google AI Studio</a>.</p>
+                        </div>
+                        <div className="mb-6 pt-4 border-t">
+                            <label className="flex items-center justify-between cursor-pointer">
+                                <span className="text-sm font-medium text-gray-700">Enable Google Translate Widget</span>
+                                <input type="checkbox" checked={googleTranslate} onChange={toggleGoogleTranslate} className="w-4 h-4 text-green-600" />
+                            </label>
+                            <p className="text-xs text-gray-500 mt-1">Shows a Google Translate dropdown at top of page.</p>
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            <button onClick={onClose} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
+                            <button onClick={() => { onSave(key); onClose(); }} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Save Key</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [plants, setPlants] = useState(() => {
+                const saved = localStorage.getItem("native_plants_data");
+                return saved ? JSON.parse(saved) : INITIAL_DATA;
+            });
+            const [selectedPlant, setSelectedPlant] = useState(null);
+            const [searchTerm, setSearchTerm] = useState("");
+            const [filters, setFilters] = useState({ category: "All", location: "All" });
+            const [isDragging, setIsDragging] = useState(false);
+            const [userApiKey, setUserApiKey] = useState(localStorage.getItem("gemini_api_key") || "");
+            const [showSettings, setShowSettings] = useState(false);
+            const [currentLanguage, setCurrentLanguage] = useState("English");
+            const [googleTranslateEnabled, setGoogleTranslateEnabled] = useState(localStorage.getItem("enable_google_translate") === "true");
+            // Cache for translated content to avoid re-fetching
+            const [translatedContent, setTranslatedContent] = useState({}); 
+            const [isTranslating, setIsTranslating] = useState(false);
+
+            useEffect(() => { localStorage.setItem("native_plants_data", JSON.stringify(plants)); }, [plants]);
+
+            // Toggle Google Translate Widget
+            useEffect(() => {
+                if (googleTranslateEnabled) {
+                    if (!document.getElementById("google_translate_script")) {
+                        const script = document.createElement("script");
+                        script.id = "google_translate_script";
+                        script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+                        document.body.appendChild(script);
+                        window.googleTranslateElementInit = function() {
+                            new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+                        };
+                    }
+                }
+            }, [googleTranslateEnabled]);
+
+            const handleSaveKey = (key) => { setUserApiKey(key); localStorage.setItem("gemini_api_key", key); };
+            const toggleGoogleTranslate = () => {
+                const newState = !googleTranslateEnabled;
+                setGoogleTranslateEnabled(newState);
+                localStorage.setItem("enable_google_translate", newState);
+                if (!newState) alert("Please refresh the page to fully remove the widget.");
+            };
+
+            // AI Content Translation Logic
+            const translateCurrentPlant = async () => {
+                if (!userApiKey) { alert("Please add your Gemini API Key in Settings to use AI Translation."); return; }
+                if (!selectedPlant) return;
+                
+                setIsTranslating(true);
+                const plantId = selectedPlant.id;
+                const lang = currentLanguage;
+                
+                const prompt = `Translate the following JSON object values into ${lang}. Keep the keys exactly the same. Return ONLY valid JSON.
+                {
+                    "highlights": "${selectedPlant["Specific Highlights/Benefits"]}",
+                    "planting": "${selectedPlant["Planting Instructions"]}",
+                    "maintenance": "${selectedPlant["Maintenance Instructions"]}",
+                    "procurement_kanchi": "${selectedPlant["Procurement Kanchipuram"]}",
+                    "procurement_penu": "${selectedPlant["Procurement Penukonda/Bangalore"]}"
+                }`;
+
+                const resultStr = await callGemini(prompt, "You are a translator.", userApiKey, true);
+                
+                if (resultStr) {
+                    try {
+                        const result = JSON.parse(resultStr);
+                        setTranslatedContent(prev => ({
+                            ...prev,
+                            [`${plantId}_${lang}`]: result
+                        }));
+                    } catch (e) {
+                        console.error("Translation parse error", e);
+                        alert("Error parsing translation. Please try again.");
+                    }
+                } else {
+                    alert("Translation failed. Please check your API key.");
+                }
+                setIsTranslating(false);
+            };
+
+            const categories = useMemo(() => ["All", ...new Set(plants.map(p => p.Category).filter(Boolean))], [plants]);
+            const filteredPlants = useMemo(() => {
+                return plants.filter(plant => {
+                    const matchesSearch = (plant["English Name"] || "").toLowerCase().includes(searchTerm.toLowerCase()) || (plant.Tamil || "").includes(searchTerm) || (plant.Hindi || "").includes(searchTerm);
+                    const matchesCategory = filters.category === "All" || plant.Category === filters.category;
+                    const matchesLocation = filters.location === "All" ? true : filters.location === "Kanchipuram" ? (plant.Kanchipuram?.toLowerCase().includes("yes")) : (plant.Anantapur?.toLowerCase().includes("yes"));
+                    return matchesSearch && matchesCategory && matchesLocation;
+                });
+            }, [plants, searchTerm, filters]);
+
+            const handleFileUpload = (file) => {
+                Papa.parse(file, {
+                    header: true, skipEmptyLines: true,
+                    complete: (results) => {
+                        const parsedPlants = results.data.map((row, idx) => ({ id: idx + 1000, ...row })).filter(row => row["English Name"]);
+                        if (parsedPlants.length > 0) { setPlants(parsedPlants); alert(`Successfully loaded ${parsedPlants.length} plants!`); } else { alert("No valid data found."); }
+                    },
+                    error: (err) => alert("Error: " + err.message)
+                });
+            };
+
+            const handleDownloadCSV = () => {
+                const csv = Papa.unparse(plants.map(({id, ...rest}) => rest));
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "native_plants_data.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
+            const handleResetData = () => { if (confirm("Reset to default?")) { setPlants(INITIAL_DATA); localStorage.removeItem("native_plants_data"); } };
+            const onDrop = (e) => { e.preventDefault(); setIsDragging(false); const file = e.dataTransfer.files[0]; if (file) handleFileUpload(file); };
+
+            const languages = [ { code: "English", label: "English", key: "English Name" }, { code: "Tamil", label: "தமிழ்", key: "Tamil" }, { code: "Kannada", label: "ಕನ್ನಡ", key: "Kannada" }, { code: "Telugu", label: "తెలుగు", key: "Telugu" }, { code: "Korean", label: "한국어", key: "Korean" } ];
+            
+            const getDisplayName = (plant) => {
+                const langKey = languages.find(l => l.code === currentLanguage)?.key || "English Name";
+                return plant[langKey] || plant["English Name"];
+            };
+            const getFontClass = () => {
+                switch(currentLanguage) { case "Tamil": return "font-tamil"; case "Kannada": return "font-kannada"; case "Telugu": return "font-telugu"; case "Korean": return "font-korean"; default: return ""; }
+            };
+            
+            const uiLabels = TRANSLATIONS[currentLanguage];
+            
+            // Get text content (translated or original)
+            const getPlantContent = (field) => {
+                if (currentLanguage === "English") return selectedPlant[field];
+                const cacheKey = `${selectedPlant.id}_${currentLanguage}`;
+                const mapping = {
+                    "Specific Highlights/Benefits": "highlights",
+                    "Planting Instructions": "planting",
+                    "Maintenance Instructions": "maintenance",
+                    "Procurement Kanchipuram": "procurement_kanchi",
+                    "Procurement Penukonda/Bangalore": "procurement_penu"
+                };
+                if (translatedContent[cacheKey] && translatedContent[cacheKey][mapping[field]]) {
+                    return translatedContent[cacheKey][mapping[field]];
+                }
+                return selectedPlant[field]; // Fallback to English
+            };
+
+            return (
+                <div className={`min-h-screen pb-10 ${getFontClass()}`} onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }} onDragLeave={() => setIsDragging(false)} onDrop={onDrop}>
+                    <header className="bg-green-800 text-white shadow-lg sticky top-0 z-30">
+                        {googleTranslateEnabled && <div id="google_translate_element" className="absolute top-0 right-0 m-2 z-50"></div>}
+                        <div className="container mx-auto px-4 py-4">
+                            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                                <div><h1 className="text-2xl font-bold flex items-center gap-2">🌱 {uiLabels.title}</h1><p className="text-green-200 text-sm">{uiLabels.subtitle}</p></div>
+                                <div className="flex gap-2 w-full md:w-auto items-center">
+                                    <div className="relative flex-grow md:flex-grow-0">
+                                        <input type="text" placeholder={uiLabels.searchPlaceholder} className="w-full md:w-64 pl-10 pr-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-400" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                                        <div className="absolute left-3 top-2.5 text-gray-400"><Icons.Search /></div>
+                                    </div>
+                                    <div className="flex items-center bg-green-700 rounded-lg p-1">
+                                        <Icons.Globe className="ml-2 text-green-200" />
+                                        <select value={currentLanguage} onChange={(e) => setCurrentLanguage(e.target.value)} className="bg-transparent text-white border-none text-sm focus:ring-0 cursor-pointer py-1 px-2">
+                                            {languages.map(lang => <option key={lang.code} value={lang.code} className="text-gray-800">{lang.label}</option>)}
+                                        </select>
+                                    </div>
+                                    <label className="cursor-pointer bg-green-700 hover:bg-green-600 p-2 rounded-lg text-white transition-colors" title={uiLabels.uploadCsv}><Icons.Upload /><input type="file" accept=".csv" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0])} /></label>
+                                    <button onClick={handleDownloadCSV} className="bg-green-700 hover:bg-green-600 p-2 rounded-lg text-white transition-colors" title={uiLabels.downloadCsv}><Icons.Download /></button>
+                                    <button onClick={handleResetData} className="bg-red-700 hover:bg-red-600 p-2 rounded-lg text-white transition-colors" title={uiLabels.resetData}><Icons.Refresh /></button>
+                                    <button onClick={() => setShowSettings(true)} className={`p-2 rounded-lg transition-colors ${userApiKey ? 'bg-green-700 text-white' : 'bg-yellow-500 text-white animate-pulse'}`} title="Settings / API Key"><Icons.Settings /></button>
+                                </div>
+                            </div>
+                            <div className="mt-4 flex flex-wrap gap-2 text-sm">
+                                <select className="bg-green-700 text-white border-none rounded px-3 py-1.5 focus:ring-1 focus:ring-white" value={filters.category} onChange={(e) => setFilters(prev => ({...prev, category: e.target.value}))}><option value="All">All Categories</option>{categories.filter(c => c !== "All").map(c => <option key={c} value={c}>{c}</option>)}</select>
+                                <select className="bg-green-700 text-white border-none rounded px-3 py-1.5 focus:ring-1 focus:ring-white" value={filters.location} onChange={(e) => setFilters(prev => ({...prev, location: e.target.value}))}><option value="All">All Locations</option><option value="Kanchipuram">{uiLabels.kanchipuram}</option><option value="Anantapur">{uiLabels.penukonda}</option></select>
+                                <div className="ml-auto text-xs text-green-200 opacity-75 self-center hidden md:block">Tip: Drag & Drop CSV to update data. Your data is saved automatically.</div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {isDragging && <div className="fixed inset-0 bg-green-900 bg-opacity-90 z-50 flex items-center justify-center text-white"><div className="text-center p-10 border-4 border-dashed border-green-400 rounded-3xl"><Icons.Upload size={64} className="mx-auto mb-4" /><h2 className="text-3xl font-bold">Drop CSV File Here</h2><p className="mt-2">to update the plant database</p></div></div>}
+
+                    <main className="container mx-auto px-4 py-8">
+                        {filteredPlants.length === 0 ? <div className="text-center py-20 text-gray-500"><p className="text-xl">No plants found.</p><button onClick={() => {setSearchTerm(""); setFilters({category: "All", location: "All"})}} className="mt-4 text-green-600 underline">Clear Filters</button></div> : 
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredPlants.map((plant) => (
+                                <div key={plant.id} onClick={() => setSelectedPlant(plant)} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-100 group overflow-hidden animate-fade-in flex flex-col h-full">
+                                    <div className="h-48 overflow-hidden bg-gray-100 relative">
+                                        <CardImage plantName={plant["English Name"]} />
+                                        <div className="absolute top-2 right-2 flex gap-1">
+                                            {plant["Bird-Friendly Status"]?.includes("SUPREME") && <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center gap-1"><Icons.Bird size={12} /> {uiLabels.topPick}</span>}
+                                            {plant["Nakshatra"] && <span className="bg-orange-400 text-orange-900 text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center gap-1"><Icons.Star size={12} /> {uiLabels.star}</span>}
+                                        </div>
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                                            <h3 className={`text-white font-bold text-lg truncate ${getFontClass()}`}>{getDisplayName(plant)}</h3>
+                                            <p className="text-white/80 text-sm truncate">{currentLanguage === "English" ? (plant.Tamil || plant.Hindi) : plant["English Name"]}</p>
+                                        </div>
+                                    </div>
+                                    <div className="p-4 flex flex-col flex-grow">
+                                        <div className="mb-3 flex flex-wrap gap-1"><Badge color="blue">{plant.Category}</Badge>{plant.Kanchipuram?.toLowerCase().includes('yes') && <Badge color="green">Kanchipuram</Badge>}{plant.Anantapur?.toLowerCase().includes('yes') && <Badge color="yellow">Penukonda</Badge>}</div>
+                                        <p className="text-sm text-gray-600 line-clamp-2 mb-4">{plant["Specific Highlights/Benefits"]}</p>
+                                        <div className="mt-auto flex items-center justify-between text-xs text-gray-500 border-t pt-3"><span className="flex items-center gap-1"><Icons.Bird size={14}/> {plant["Bird-Friendly Status"]?.split('(')[0]}</span><span className="text-green-600 font-medium group-hover:translate-x-1 transition-transform">{uiLabels.viewDetails}</span></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>}
+                    </main>
+
+                    {selectedPlant && <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedPlant(null)}>
+                        <div className="bg-white rounded-2xl w-full max-w-5xl h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-fade-in" onClick={e => e.stopPropagation()}>
+                            <div className="bg-green-50 border-b px-6 py-4 flex justify-between items-start">
+                                <div>
+                                    <h2 className={`text-2xl font-bold text-gray-800 ${getFontClass()}`}>{getDisplayName(selectedPlant)}</h2>
+                                    <p className="text-gray-600 font-medium italic serif text-sm mt-1">
+                                        {currentLanguage !== "English" && `${selectedPlant["English Name"]} • `}
+                                        {currentLanguage !== "Tamil" && `${selectedPlant.Tamil} • `}
+                                        {currentLanguage !== "Hindi" && `${selectedPlant.Hindi} • `}
+                                        {currentLanguage !== "Kannada" && `${selectedPlant.Kannada} • `}
+                                        {currentLanguage !== "Telugu" && `${selectedPlant.Telugu}`}
+                                        {currentLanguage !== "Korean" && selectedPlant.Korean && selectedPlant.Korean !== "NA" && ` • ${selectedPlant.Korean}`}
+                                    </p>
+                                </div>
+                                <button onClick={() => setSelectedPlant(null)} className="p-2 hover:bg-gray-200 rounded-full transition-colors"><Icons.X /></button>
+                            </div>
+                            <div className="flex-grow overflow-y-auto p-6">
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                    <div className="lg:col-span-1 space-y-6">
+                                        <div className="bg-gray-50 rounded-lg p-1 border h-64 overflow-hidden relative">
+                                            <SmartImageSlot type={uiLabels.overall} plantName={selectedPlant["English Name"]} color="bg-green-100" uiLabels={uiLabels} />
+                                        </div>
+                                        <div><h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2"><span className="w-1 h-5 bg-green-500 rounded-full"></span> {uiLabels.features}</h3>
+                                            <div className="grid grid-cols-2 gap-3 h-64">
+                                                <SmartImageSlot type={uiLabels.leaves} plantName={selectedPlant["English Name"]} color="bg-green-50" uiLabels={uiLabels} />
+                                                <SmartImageSlot type={uiLabels.flowers} plantName={selectedPlant["English Name"]} color="bg-pink-50" uiLabels={uiLabels} />
+                                                <SmartImageSlot type={uiLabels.fruits} plantName={selectedPlant["English Name"]} color="bg-orange-50" uiLabels={uiLabels} />
+                                                <SmartImageSlot type={uiLabels.overall} plantName={selectedPlant["English Name"]} color="bg-amber-50" uiLabels={uiLabels} />
+                                            </div>
+                                        </div>
+                                        <div className="bg-green-50 rounded-xl p-4 space-y-2"><DetailRow label={uiLabels.category} value={selectedPlant.Category} /><DetailRow label={uiLabels.birdStatus} value={selectedPlant["Bird-Friendly Status"]} icon={Icons.Bird} /></div>
+                                    </div>
+                                    <div className="lg:col-span-2 space-y-8">
+                                        {/* NAKSHATRA SECTION */}
+                                        {selectedPlant["Nakshatra"] && selectedPlant["Nakshatra"] !== "" && (
+                                            <section className="bg-orange-50 border border-orange-200 rounded-xl p-5 shadow-sm">
+                                                <h3 className="text-xl font-bold text-orange-900 mb-3 flex items-center gap-2"><Icons.Star className="text-orange-600" /> {uiLabels.cultural}</h3>
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                                    <div className="bg-white p-3 rounded-lg border border-orange-100"><span className="block text-xs text-orange-500 uppercase font-bold">{uiLabels.nakshatra}</span><span className="text-orange-900 font-semibold text-lg">{selectedPlant["Nakshatra"]}</span></div>
+                                                    <div className="bg-white p-3 rounded-lg border border-orange-100"><span className="block text-xs text-orange-500 uppercase font-bold">{uiLabels.temple}</span><span className="text-gray-800 font-medium">{selectedPlant["Temple Name (English)"] || "N/A"}</span></div>
+                                                    <div className="bg-white p-3 rounded-lg border border-orange-100"><span className="block text-xs text-orange-500 uppercase font-bold">{uiLabels.location}</span><span className="text-gray-800 font-medium">{selectedPlant["Location (English)"] || "N/A"}</span></div>
+                                                </div>
+                                            </section>
+                                        )}
+
+                                        {/* CONTENT TRANSLATION BUTTON */}
+                                        {currentLanguage !== "English" && (
+                                            <div className="flex justify-end mb-2">
+                                                <button 
+                                                    onClick={translateCurrentPlant} 
+                                                    disabled={isTranslating}
+                                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isTranslating ? 'bg-gray-100 text-gray-400' : 'bg-purple-100 text-purple-700 hover:bg-purple-200'}`}
+                                                >
+                                                    {isTranslating ? <><Icons.Refresh className="animate-spin" size={16}/> {uiLabels.translating}</> : <><Icons.Translate size={16}/> {uiLabels.translateContent} {currentLanguage}</>}
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        <section><h3 className="text-xl font-bold text-gray-800 mb-3 border-b pb-2">{uiLabels.highlights}</h3><p className="text-gray-700 leading-relaxed text-lg">{getPlantContent("Specific Highlights/Benefits")}</p></section>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div className="bg-blue-50 rounded-xl p-5 border border-blue-100"><h4 className="font-bold text-blue-900 flex items-center gap-2 mb-3"><Icons.Sun size={18} /> {uiLabels.plantingGuide}</h4><p className="text-blue-800 text-sm leading-relaxed whitespace-pre-line">{getPlantContent("Planting Instructions") || "No specific instructions available."}</p></div>
+                                            <div className="bg-amber-50 rounded-xl p-5 border border-amber-100"><h4 className="font-bold text-amber-900 flex items-center gap-2 mb-3"><Icons.Droplet size={18} /> {uiLabels.maintenance}</h4><p className="text-amber-800 text-sm leading-relaxed whitespace-pre-line">{getPlantContent("Maintenance Instructions") || "Standard maintenance required."}</p></div>
+                                        </div>
+                                        <AIAssistant plant={selectedPlant} userKey={userApiKey} uiLabels={uiLabels} />
+                                        <section className="bg-gray-50 rounded-xl p-5 border border-gray-200"><h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><Icons.MapPin size={20} className="text-red-500" /> {uiLabels.procurement}</h3><div className="grid grid-cols-1 md:grid-cols-2 gap-6"><div><h5 className="font-semibold text-gray-700 mb-2 border-b border-gray-200 pb-1">{uiLabels.kanchipuram}</h5><p className="text-sm text-gray-600 whitespace-pre-wrap">{getPlantContent("Procurement Kanchipuram") || "Contact local nurseries."}</p></div><div><h5 className="font-semibold text-gray-700 mb-2 border-b border-gray-200 pb-1">{uiLabels.penukonda}</h5><p className="text-sm text-gray-600 whitespace-pre-wrap">{getPlantContent("Procurement Penukonda/Bangalore") || "Contact Horticulture Dept."}</p></div></div></section>
+                                        <div className="flex justify-end pt-4"><a href={`https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(selectedPlant["English Name"])}`} target="_blank" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium">{uiLabels.readMore} <Icons.ExternalLink size={16} /></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
+                    
+                    {showSettings && <SettingsModal currentKey={userApiKey} googleTranslate={googleTranslateEnabled} toggleGoogleTranslate={toggleGoogleTranslate} onClose={() => setShowSettings(false)} onSave={handleSaveKey} />}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
