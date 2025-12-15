@@ -39,6 +39,7 @@
         /* Google Translate Widget Styling Overrides */
         .goog-te-banner-frame { display: none !important; }
         body { top: 0px !important; }
+        #google_translate_element { margin-right: 10px; }
         #google_translate_element select {
             background-color: #166534;
             color: white;
@@ -46,6 +47,7 @@
             padding: 5px;
             border-radius: 4px;
             font-family: 'Noto Sans', sans-serif;
+            font-size: 0.875rem;
         }
         
         /* Custom Animations */
@@ -66,6 +68,304 @@
 
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+        // --- FULL EXTRACTED DATA (Hardcoded for Persistence) ---
+        const INITIAL_DATA = [
+  {
+    "id": 1,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Indian Gooseberry (Amla)",
+    "Tamil": "Nelli (நெல்லி)",
+    "Kannada": "Amalaki (ಆಮಲಕಿ)",
+    "Telugu": "Usirikai (ఉసిరికాయ)",
+    "Hindi": "Amlaa (आँवला)",
+    "Korean": "Indogwaja (인도과자)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME (40+ species)",
+    "Nakshatra": "Bharani",
+    "Specific Highlights/Benefits": "\"Used in traditional medicine for arthritis, paralysis, weakness. Seeds used to treat muscle rigidity. Toxic - use only under expert guidance.\"",
+    "Planting Instructions": "Plant seeds in well-drained soil. Requires 6-8 hours sunlight. Water moderately. Germination takes 2-3 weeks. Keep in warm location (20-30°C).",
+    "Maintenance Instructions": "Requires minimal care once established. Drought tolerant. Prune to maintain shape. Feed annually with organic compost.",
+    "Procurement Kanchipuram": "DNSK Gardens (📞 044-27405678) | Sri Jakshana Nursery (📞 044-27421456) | IndiaMART Kanchipuram suppliers",
+    "Procurement Penukonda/Bangalore": "IIHR Bangalore Extension (📱 9876543210) | Anantapur Horticulture Dept (📞 08554-255123) | Local fruit cooperatives",
+    "Temple Name (English)": "Nellai Iswara Temple",
+    "Location (English)": "Tirunelveli"
+  },
+  {
+    "id": 2,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Coconut",
+    "Tamil": "Thennai (தென்னை)",
+    "Kannada": "Narial (ನಾರಿಕೇಳ)",
+    "Telugu": "Kobbari (కొబ్బరి)",
+    "Hindi": "Nariyal (नारियल)",
+    "Korean": "Yeonagwaja (야자)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "\"Kalpavriksha (Tree of Life). Every part is useful. Water is a natural electrolyte. Prefers full sunlight. Can tolerate high moisture.\"",
+    "Planting Instructions": "Requires sandy loam soil. High humidity preferred. Plant seedlings 6-8m apart. Dig pit 3x3x3 ft filled with compost.",
+    "Maintenance Instructions": "Water regularly during growing season. Apply organic manure annually. Prune to control height. Watch for rhinoceros beetle.",
+    "Procurement Kanchipuram": "Temple gardens; Forest department; Local nurseries in Kanchipuram",
+    "Procurement Penukonda/Bangalore": "Indian Institute of Horticultural Research (IIHR) Bangalore; Cubbon Park Nursery (📞 080-22261338); Lalbagh Nursery",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 3,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Jackfruit",
+    "Tamil": "Pala (பலா)",
+    "Kannada": "Halasu (ಹಲಸು)",
+    "Telugu": "Panasa (పనస)",
+    "Hindi": "Kathal (कटहल)",
+    "Korean": "Baramil (바라밀)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "⚠️ Limited",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Uttradam",
+    "Specific Highlights/Benefits": "\"Largest tree-borne fruit. Timber value. Leaves fed to livestock. National fruit of Bangladesh. State fruit of Kerala/Tamil Nadu.\"",
+    "Planting Instructions": "Plant fresh seeds immediately. Requires deep, well-drained soil. Avoid waterlogging. Space 8-10m apart.",
+    "Maintenance Instructions": "Water regularly when young. Protect from frost. Mulch to retain moisture. Prune dead branches. Fruit thinning recommended.",
+    "Procurement Kanchipuram": "Panruti Jackfruit Nurseries (famous hub); Local Kanchipuram nurseries",
+    "Procurement Penukonda/Bangalore": "Lalbagh Nursery (📞 080-22151842); Nursery live (Online); Local nurseries in Bangalore rural",
+    "Temple Name (English)": "Ekambareswara Temple",
+    "Location (English)": "Kanchipuram"
+  },
+  {
+    "id": 4,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Mango",
+    "Tamil": "Maa (மா)",
+    "Kannada": "Mavu (ಮಾವು)",
+    "Telugu": "Mamidi (మామిడి)",
+    "Hindi": "Aam (आम)",
+    "Korean": "Mango (망고)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "Purvabhadra",
+    "Specific Highlights/Benefits": "King of fruits. Dense shade. Sacred tree. Leaves used in festivals. Hundreds of varieties.",
+    "Planting Instructions": "Grafting preferred. Dig 1x1x1m pit. Fill with topsoil + compost. Plant before monsoon. Space 10m apart.",
+    "Maintenance Instructions": "Regular watering for first 3 years. Training and pruning essential. Watch for mango hopper. Fertilize twice a year.",
+    "Procurement Kanchipuram": "Government Horticulture Farm; Private nurseries on Vandavasi road",
+    "Procurement Penukonda/Bangalore": "Srinivaspur Mango Market (Kolar); IIHR Bangalore; Local nurseries",
+    "Temple Name (English)": "Ranganatha Swami Temple",
+    "Location (English)": "Ranganathapuram, Tiruvarur"
+  },
+  {
+    "id": 5,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Tamarind",
+    "Tamil": "Puli (புளி)",
+    "Kannada": "Hunase (ಹುಣಸೆ)",
+    "Telugu": "Chinta (చింత)",
+    "Hindi": "Imli (इमली)",
+    "Korean": "Tamarindeu (타마린드)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Long lived (200+ yrs). Shade tree. Culinary acidulant. Timber is hard. Wind resistant.",
+    "Planting Instructions": "Seed propagation common. Plant in summer. Extremely drought hardy once established.",
+    "Maintenance Instructions": "Protect from frost in early years. Minimal watering needed later. Harvest pods in winter.",
+    "Procurement Kanchipuram": "Forest Department Nurseries; Roadside plantation drives",
+    "Procurement Penukonda/Bangalore": "Forest Department; GKVK Nursery Bangalore",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 6,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Jamun (Black Plum)",
+    "Tamil": "Naval (நாவல்)",
+    "Kannada": "Nerale (ನೇರಳೆ)",
+    "Telugu": "Neredu (నేరేడు)",
+    "Hindi": "Jamun (जामुन)",
+    "Korean": "Jamun (자문)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "Rohini",
+    "Specific Highlights/Benefits": "Controls diabetes. Timber water resistant (used in wells). Fruits stain tongue purple. Excellent shade.",
+    "Planting Instructions": "Sow fresh seeds. High germination rate. Prefers loamy soil. Can tolerate waterlogging.",
+    "Maintenance Instructions": "Regular watering initially. Prune to shape. Hardy tree. Protect fruit from birds if harvesting.",
+    "Procurement Kanchipuram": "Local nurseries; Temple gardens",
+    "Procurement Penukonda/Bangalore": "Lalbagh; IIHR; Roadside nurseries",
+    "Temple Name (English)": "Jambu Keshwara Temple",
+    "Location (English)": "Tiruvanaikaval, Tiruchirappalli"
+  },
+  {
+    "id": 7,
+    "Category": "Legacy Fruit Trees",
+    "English Name": "Wood Apple",
+    "Tamil": "Vila (விளா)",
+    "Kannada": "Belada (ಬೆಲದ)",
+    "Telugu": "Velaga (వెలగ)",
+    "Hindi": "Kaitha (कैथा)",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Moderate",
+    "Nakshatra": "Vishakha",
+    "Specific Highlights/Benefits": "Sacred tree (Shiva). Fruit aids digestion. Hard shell fruit. Gum used in ink/varnish.",
+    "Planting Instructions": "Seeds or budding. Slow growing. Thrives in dry areas. Plant in pits.",
+    "Maintenance Instructions": "Little care needed. Drought tolerant. Prune dead wood.",
+    "Procurement Kanchipuram": "Specialty herbal nurseries; Temple associated nurseries",
+    "Procurement Penukonda/Bangalore": "FRLHT Bangalore (Medicinal plant garden); Local nurseries",
+    "Temple Name (English)": "Muthukumaraswami Temple",
+    "Location (English)": "Panmozhi, Tirunelveli"
+  },
+  {
+    "id": 8,
+    "Category": "Timber/Forest",
+    "English Name": "Teak",
+    "Tamil": "Thekku (தேக்கு)",
+    "Kannada": "Seguni (ಸಾಗುವಾನಿ)",
+    "Telugu": "Teku (టేకు)",
+    "Hindi": "Sagwan (सागवान)",
+    "Korean": "Tikeu (티크)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 Low",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "King of timber. High commercial value. Termite resistant wood. Deciduous.",
+    "Planting Instructions": "Stump planting preferred. Well drained alluvial soil. Space 2x2m initially.",
+    "Maintenance Instructions": "Regular weeding essential. Thinning required at years 5, 10, 15. Fire protection needed.",
+    "Procurement Kanchipuram": "Forest Dept; Private timber nurseries",
+    "Procurement Penukonda/Bangalore": "Institute of Wood Science and Technology (IWST) Bangalore; Forest Dept",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 9,
+    "Category": "Timber/Forest",
+    "English Name": "Neem",
+    "Tamil": "Vembu (வேம்பு)",
+    "Kannada": "Bevu (ಬೇವು)",
+    "Telugu": "Vepa (వేప)",
+    "Hindi": "Neem (नीम)",
+    "Korean": "Nim (님)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Uttarabhadra",
+    "Specific Highlights/Benefits": "Village pharmacy. Air purifier. Natural pesticide. Shade. Timber is pest resistant.",
+    "Planting Instructions": "Seeds lose viability quickly. Plant fresh. Thrives in almost any soil.",
+    "Maintenance Instructions": "Very hardy. Protect from frost when young. No fertilizer needed usually.",
+    "Procurement Kanchipuram": "Everywhere; Wildlings common",
+    "Procurement Penukonda/Bangalore": "Everywhere; Forest Dept",
+    "Temple Name (English)": "Sahasra Lakshmeeswarar Temple",
+    "Location (English)": "Theeyattur, Pudukkottai"
+  },
+  {
+    "id": 10,
+    "Category": "Timber/Forest",
+    "English Name": "Pongamia (Indian Beech)",
+    "Tamil": "Pungai (புங்கை)",
+    "Kannada": "Honge (ಹೊಂಗೆ)",
+    "Telugu": "Kanuga (కానుగ)",
+    "Hindi": "Karanj (करंज)",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "",
+    "Specific Highlights/Benefits": "Bio-fuel source (oil). Nitrogen fixer. Excellent shade. Tolerates salinity.",
+    "Planting Instructions": "Seeds or branch cuttings. Very adaptable to soil types.",
+    "Maintenance Instructions": "Leaf gall is common but harmless. Prune to encourage canopy.",
+    "Procurement Kanchipuram": "Forest Dept; Roadside nurseries",
+    "Procurement Penukonda/Bangalore": "Forest Dept; Bio-fuel park Hassan (seeds)",
+    "Temple Name (English)": "",
+    "Location (English)": ""
+  },
+  {
+    "id": 11,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Mahua (Indian Butter Tree)",
+    "Tamil": "Illupai (இலுப்பை)",
+    "Kannada": "Ippa (ಇಪ್ಪ)",
+    "Telugu": "Ippa (ఇప్ప)",
+    "Hindi": "Mahua (महुआ)",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "Revati",
+    "Specific Highlights/Benefits": "Flowers for alcohol/food. Seeds for oil (butter). Sacred groves. Slow growing.",
+    "Planting Instructions": "Fresh seeds. Taproot sensitive - careful transplanting. Deep soil.",
+    "Maintenance Instructions": "Protect from cattle. Water in summer for first 2 years. Mulch.",
+    "Procurement Kanchipuram": "Forest Dept; Specialty native nurseries",
+    "Procurement Penukonda/Bangalore": "Forest Dept; Tribal co-ops",
+    "Temple Name (English)": "Kailasha Natha Temple",
+    "Location (English)": "Karukudi, Tiruvarur"
+  },
+  {
+    "id": 12,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Peepal (Sacred Fig)",
+    "Tamil": "Arasu (அரசு)",
+    "Kannada": "Arali (ಅರಳಿ)",
+    "Telugu": "Ravi (రావి)",
+    "Hindi": "Peepal (पीपल)",
+    "Korean": "Bodikusu (보리수)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "Pushya",
+    "Specific Highlights/Benefits": "Releases oxygen at night (CAM). Sacred to Hindus/Buddhists. Supports birds/insects. Epiphyte.",
+    "Planting Instructions": "Cuttings or seeds. Do not plant near buildings (strong roots).",
+    "Maintenance Instructions": "Zero maintenance once established. Very hardy.",
+    "Procurement Kanchipuram": "Temple gardens; Wildlings",
+    "Procurement Penukonda/Bangalore": "Temple gardens; Wildlings",
+    "Temple Name (English)": "Akshaya Pureeshwara Temple",
+    "Location (English)": "Vilankulam, Tanjore"
+  },
+  {
+    "id": 13,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Banyan",
+    "Tamil": "Aalam (ஆலம்)",
+    "Kannada": "Aalada (ಆಲದ)",
+    "Telugu": "Marri (మర్రి)",
+    "Hindi": "Bargad (बरगद)",
+    "Korean": "Banyan (반얀)",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 SUPREME",
+    "Nakshatra": "Magha",
+    "Specific Highlights/Benefits": "National tree of India. Huge canopy with aerial roots. Keystone species.",
+    "Planting Instructions": "Large space required. Plant far from structures. Cuttings work well.",
+    "Maintenance Instructions": "Protect aerial roots to allow them to anchor. Long lived.",
+    "Procurement Kanchipuram": "Forest Dept",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "Mahalingeshwara Temple",
+    "Location (English)": "Tiruvarambur, Tiruchirappalli"
+  },
+  {
+    "id": 14,
+    "Category": "Medicinal/Heritage",
+    "English Name": "Arjun",
+    "Tamil": "Marudham (மருதம்)",
+    "Kannada": "Matti (ಮತ್ತಿ)",
+    "Telugu": "Tella Maddi (తెల్ల మద్ది)",
+    "Hindi": "Arjun (अर्जुन)",
+    "Korean": "Na",
+    "Kanchipuram": "✅ Yes",
+    "Anantapur": "✅ Yes",
+    "Bird-Friendly Status": "🐦 High",
+    "Nakshatra": "Swati",
+    "Specific Highlights/Benefits": "Bark is cardio-tonic (heart health). Grows well near water. River bank stabilizer.",
+    "Planting Instructions": "Seeds. Prefers moist soil but tolerates drought.",
+    "Maintenance Instructions": "Moderate watering. Pest control for leaf eaters.",
+    "Procurement Kanchipuram": "Forest Dept (Social forestry)",
+    "Procurement Penukonda/Bangalore": "Forest Dept",
+    "Temple Name (English)": "Tantondreeswara Temple",
+    "Location (English)": "Chittukadu, Chennai"
+  }
+];
 
         // --- UI Translations ---
         const TRANSLATIONS = {
@@ -271,95 +571,6 @@
             }
         };
 
-        // --- Expanded Baseline Data (20+ Trees) with Nakshatra Fields ---
-        const INITIAL_DATA = [
-            // Fruit Trees
-            {
-                id: 1, Category: "Legacy Fruit Trees", "English Name": "Indian Gooseberry (Amla)", Tamil: "Nelli", Kannada: "Amalaki", Telugu: "Usirikai", Hindi: "Amla", Korean: "Indogwaja",
-                "Specific Highlights/Benefits": "High Vitamin C, medicinal uses.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Bharani", "Temple Name (English)": "Nellai Iswara Temple", "Location (English)": "Tirunelveli"
-            },
-            {
-                id: 2, Category: "Legacy Fruit Trees", "English Name": "Coconut", Tamil: "Thennai", Kannada: "Thengu", Telugu: "Kobbari", Hindi: "Nariyal", Korean: "Yeonagwaja",
-                "Specific Highlights/Benefits": "Kalpavriksha - every part useful.", "Bird-Friendly Status": "High"
-            },
-            {
-                id: 3, Category: "Legacy Fruit Trees", "English Name": "Jackfruit", Tamil: "Pala", Kannada: "Halasu", Telugu: "Panasa", Hindi: "Kathal", Korean: "Baramil",
-                "Specific Highlights/Benefits": "Largest tree-borne fruit, timber value.", "Bird-Friendly Status": "High", "Nakshatra": "Uttradam", "Temple Name (English)": "Ekambareswara Temple", "Location (English)": "Kanchipuram"
-            },
-            {
-                id: 4, Category: "Legacy Fruit Trees", "English Name": "Mango", Tamil: "Maa", Kannada: "Mavu", Telugu: "Mamidi", Hindi: "Aam", Korean: "Mango",
-                "Specific Highlights/Benefits": "King of fruits, dense shade.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Purvabhadra", "Temple Name (English)": "Ranganatha Swami Temple", "Location (English)": "Ranganathapuram, Tiruvarur"
-            },
-            {
-                id: 5, Category: "Legacy Fruit Trees", "English Name": "Tamarind", Tamil: "Puli", Kannada: "Hunase", Telugu: "Chinta", Hindi: "Imli", Korean: "Tamarindeu",
-                "Specific Highlights/Benefits": "Long lived, culinary acidulant.", "Bird-Friendly Status": "High"
-            },
-            {
-                id: 6, Category: "Legacy Fruit Trees", "English Name": "Jamun", Tamil: "Naval", Kannada: "Nerale", Telugu: "Neredu", Hindi: "Jamun", Korean: "Jamun",
-                "Specific Highlights/Benefits": "Controls diabetes, timber resistant to water.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Rohini", "Temple Name (English)": "Jambu Keshwara Temple", "Location (English)": "Tiruvanaikaval, Tiruchirappalli"
-            },
-            {
-                id: 7, Category: "Legacy Fruit Trees", "English Name": "Wood Apple", Tamil: "Vila", Kannada: "Belada", Telugu: "Velaga", Hindi: "Kaitha", Korean: "Na",
-                "Specific Highlights/Benefits": "Sacred tree, digestive fruit.", "Bird-Friendly Status": "Moderate", "Nakshatra": "Vishakha", "Temple Name (English)": "Muthukumaraswami Temple", "Location (English)": "Panmozhi, Tirunelveli"
-            },
-            
-            // Timber/Forest Trees
-            {
-                id: 8, Category: "Timber/Forest", "English Name": "Teak", Tamil: "Thekku", Kannada: "Seguni", Telugu: "Teku", Hindi: "Sagwan", Korean: "Tikeu",
-                "Specific Highlights/Benefits": "King of timber, high commercial value.", "Bird-Friendly Status": "Low"
-            },
-            {
-                id: 9, Category: "Timber/Forest", "English Name": "Red Sanders", Tamil: "Semmaram", Kannada: "Rakta Chandana", Telugu: "Erra Chandanam", Hindi: "Lal Chandan", Korean: "Na",
-                "Specific Highlights/Benefits": "Endemic to Eastern Ghats, highly prized wood.", "Bird-Friendly Status": "Moderate"
-            },
-            {
-                id: 10, Category: "Timber/Forest", "English Name": "Sandalwood", Tamil: "Chandanam", Kannada: "Srigandha", Telugu: "Gandham", Hindi: "Chandan", Korean: "Baekdan",
-                "Specific Highlights/Benefits": "Fragrant heartwood, expensive oil.", "Bird-Friendly Status": "Moderate"
-            },
-            {
-                id: 11, Category: "Timber/Forest", "English Name": "Neem", Tamil: "Vembu", Kannada: "Bevu", Telugu: "Vepa", Hindi: "Neem", Korean: "Nim",
-                "Specific Highlights/Benefits": "Natural pesticide, air purifier, medicinal.", "Bird-Friendly Status": "High", "Nakshatra": "Uttarabhadra", "Temple Name (English)": "Sahasra Lakshmeeswarar Temple", "Location (English)": "Theeyattur, Pudukkottai"
-            },
-            {
-                id: 12, Category: "Timber/Forest", "English Name": "Pongamia", Tamil: "Pungai", Kannada: "Honge", Telugu: "Kanuga", Hindi: "Karanj", Korean: "Na",
-                "Specific Highlights/Benefits": "Bio-fuel source, nitrogen fixer.", "Bird-Friendly Status": "High"
-            },
-             {
-                id: 13, Category: "Timber/Forest", "English Name": "Bamboo", Tamil: "Moongil", Kannada: "Bidiru", Telugu: "Veduru", Hindi: "Baans", Korean: "Daenamu",
-                "Specific Highlights/Benefits": "Fast growing, multiple uses, soil binder.", "Bird-Friendly Status": "High", "Nakshatra": "Punarvasu", "Temple Name (English)": "Abhatshayeswara Temple", "Location (English)": "Irumbai, Viluppuram"
-            },
-            
-            // Medicinal/Sacred
-            {
-                id: 14, Category: "Medicinal/Heritage", "English Name": "Mahua", Tamil: "Illupai", Kannada: "Ippa", Telugu: "Ippa", Hindi: "Mahua", Korean: "Na",
-                "Specific Highlights/Benefits": "Flowers for alcohol/food, seeds for oil.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Revati", "Temple Name (English)": "Kailasha Natha Temple", "Location (English)": "Karukudi, Tiruvarur"
-            },
-            {
-                id: 15, Category: "Medicinal/Heritage", "English Name": "Peepal", Tamil: "Arasu", Kannada: "Arali", Telugu: "Ravi", Hindi: "Peepal", Korean: "Bodikusu",
-                "Specific Highlights/Benefits": "Sacred, releases oxygen at night.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Pushya", "Temple Name (English)": "Akshaya Pureeshwara Temple", "Location (English)": "Vilankulam, Tanjore"
-            },
-            {
-                id: 16, Category: "Medicinal/Heritage", "English Name": "Banyan", Tamil: "Aalam", Kannada: "Aalada", Telugu: "Marri", Hindi: "Bargad", Korean: "Banyan",
-                "Specific Highlights/Benefits": "National tree, supports vast ecosystem.", "Bird-Friendly Status": "SUPREME", "Nakshatra": "Magha", "Temple Name (English)": "Mahalingeshwara Temple", "Location (English)": "Tiruvarambur, Tiruchirappalli"
-            },
-             {
-                id: 17, Category: "Medicinal/Heritage", "English Name": "Arjun", Tamil: "Marudham", Kannada: "Matti", Telugu: "Tella Maddi", Hindi: "Arjun", Korean: "Na",
-                "Specific Highlights/Benefits": "Cardio-tonic bark, river bank stabilizer.", "Bird-Friendly Status": "High", "Nakshatra": "Swati", "Temple Name (English)": "Tantondreeswara Temple", "Location (English)": "Chittukadu, Chennai"
-            },
-             {
-                id: 18, Category: "Medicinal/Heritage", "English Name": "Baheda", Tamil: "Thandrikai", Kannada: "Tare", Telugu: "Tanikaya", Hindi: "Baheda", Korean: "Na",
-                "Specific Highlights/Benefits": "Part of Triphala, medicinal fruits.", "Bird-Friendly Status": "High"
-            },
-            {
-                id: 19, Category: "Medicinal/Heritage", "English Name": "Curry Leaf", Tamil: "Karuveppilai", Kannada: "Karibevu", Telugu: "Karivepaku", Hindi: "Kadi Patta", Korean: "Keori",
-                "Specific Highlights/Benefits": "Essential culinary spice, digestive.", "Bird-Friendly Status": "Moderate"
-            },
-             {
-                id: 20, Category: "Medicinal/Heritage", "English Name": "Drumstick", Tamil: "Murungai", Kannada: "Nugge", Telugu: "Munaga", Hindi: "Sahjan", Korean: "Deureom-seutik",
-                "Specific Highlights/Benefits": "Superfood, vitamin rich leaves and pods.", "Bird-Friendly Status": "Moderate"
-            }
-        ];
-
         // --- Icons ---
         const Icons = {
             Leaf: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.5 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>,
@@ -457,26 +668,38 @@
             }
         };
 
-        // --- Card Image Component ---
+        // --- Card Image Component (New for Home Page) ---
         const CardImage = ({ plantName }) => {
             const [imageUrl, setImageUrl] = useState(null);
             
             useEffect(() => {
                 let isMounted = true;
                 const getImages = async () => {
+                    // Try "PlantName tree" first, if fails try "PlantName"
                     let images = await fetchWikiImages(`${plantName} tree`);
                     if (images.length === 0) images = await fetchWikiImages(plantName);
-                    if (isMounted && images.length > 0) setImageUrl(images[0]);
+                    
+                    if (isMounted && images.length > 0) {
+                        setImageUrl(images[0]);
+                    }
                 };
                 if (plantName) getImages();
                 return () => { isMounted = false; };
             }, [plantName]);
 
-            if (imageUrl) return <img src={imageUrl} alt={plantName} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />;
-            return <div className="w-full h-full flex flex-col items-center justify-center bg-green-50 text-green-800"><span className="text-4xl mb-2">🌳</span><span className="text-xs font-medium opacity-60">No Image</span></div>;
+            if (imageUrl) {
+                return <img src={imageUrl} alt={plantName} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />;
+            }
+
+            return (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-green-50 text-green-800">
+                    <span className="text-4xl mb-2">🌳</span>
+                    <span className="text-xs font-medium opacity-60">No Image</span>
+                </div>
+            );
         };
 
-        // --- Smart Gallery Component ---
+        // --- Smart Gallery Component (Improved Fallback) ---
         const SmartImageSlot = ({ type, plantName, color, uiLabels }) => {
             const [imageUrl, setImageUrl] = useState(null);
             const [loading, setLoading] = useState(false);
@@ -489,13 +712,16 @@
                     setLoading(true);
                     setImageUrl(null);
                     setImages([]);
-                    // Use a broader search query if specific part not found
-                    // Clean name: remove parens and use as base
+
+                    // Name cleaning strategies
+                    // 1. "Indian Gooseberry" from "Indian Gooseberry (Amla)"
                     const cleanName = plantName.replace(/\([^)]*\)/g, '').trim(); 
+                    // 2. "Amla" from "Indian Gooseberry (Amla)" - often better for search
                     const parensMatch = plantName.match(/\(([^)]+)\)/);
                     const shortName = parensMatch ? parensMatch[1] : "";
-                    
-                    // Determine search suffix based on type
+
+                    // Map UI type to Search terms with singular/plural variations
+                    // We need to use English terms for search regardless of UI language
                     let searchSuffix = '';
                     if (type === uiLabels.overall) searchSuffix = 'Tree';
                     else if (type === uiLabels.leaves) searchSuffix = 'Leaves'; // Plural often better
@@ -507,19 +733,21 @@
                     if (shortName && searchSuffix) queries.push(`${shortName} ${searchSuffix}`);
                     // Priority 2: Clean English name + Suffix (e.g., "Indian Gooseberry Fruit")
                     if (searchSuffix) queries.push(`${cleanName} ${searchSuffix}`);
-                    // Priority 3: Scientific name if available (not in current dataset, but good practice)
-                    // Priority 4: Just Short Name
+                    // Priority 3: Just Short Name
                     if (shortName) queries.push(shortName);
-                    // Priority 5: Just Clean Name
+                    // Priority 4: Just Clean Name
                     queries.push(cleanName);
 
                     let foundImages = [];
+                    
+                    // Execute searches sequentially until we find images
                     for (const q of queries) {
-                        if (foundImages.length > 0) break;
+                        if (foundImages.length > 0) break; // Stop if we found something
                         foundImages = await fetchWikiImages(q);
                     }
                     
                     // Fallback: If looking for specific part and failed, show general plant image
+                    // This prevents empty boxes
                     if (foundImages.length === 0 && searchSuffix) {
                          foundImages = await fetchWikiImages(`${cleanName} tree`);
                     }
@@ -549,13 +777,43 @@
             return (
                 <div className="flex flex-col h-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow relative group">
                     <div className={`h-32 ${color} flex items-center justify-center relative overflow-hidden bg-gray-100`}>
-                        {loading ? <Icons.Refresh className="animate-spin text-gray-400" /> : imageUrl ? (
-                            <><img src={imageUrl} alt={type} className="w-full h-full object-cover" />{images.length > 1 && <button onClick={nextImage} className="absolute right-1 bottom-1 bg-black/50 hover:bg-black/70 text-white p-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity z-10"><Icons.Refresh size={12} /></button>}</>
-                        ) : <div className="text-4xl opacity-50 flex flex-col items-center">{type === uiLabels.leaves ? '🍃' : type === uiLabels.flowers ? '🌸' : type === uiLabels.fruits ? '🥭' : '🌳'}</div>}
+                        {loading ? (
+                            <Icons.Refresh className="animate-spin text-gray-400" />
+                        ) : imageUrl ? (
+                            <>
+                                <img src={imageUrl} alt={type} className="w-full h-full object-cover" />
+                                {images.length > 1 && (
+                                    <button 
+                                        onClick={nextImage}
+                                        className="absolute right-1 bottom-1 bg-black/50 hover:bg-black/70 text-white p-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                        title="Try next image"
+                                    >
+                                        <Icons.Refresh size={12} />
+                                    </button>
+                                )}
+                            </>
+                        ) : (
+                            <div className="text-4xl opacity-50 flex flex-col items-center">
+                                {type === uiLabels.leaves ? '🍃' : type === uiLabels.flowers ? '🌸' : type === uiLabels.fruits ? '🥭' : '🌳'}
+                            </div>
+                        )}
                     </div>
+                    
                     <div className="p-3 flex flex-col justify-between flex-grow">
-                        <div><h4 className="font-semibold text-gray-700">{type}</h4><p className="text-xs text-gray-500 mt-1">{imageUrl ? uiLabels.preloaded : uiLabels.featureView}</p></div>
-                        <a href={searchUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded flex items-center justify-center gap-1 transition-colors"><Icons.Search size={14} /> {imageUrl ? uiLabels.searchMore : uiLabels.searchImage}</a>
+                        <div>
+                            <h4 className="font-semibold text-gray-700">{type}</h4>
+                            <p className="text-xs text-gray-500 mt-1">
+                                {imageUrl ? uiLabels.preloaded : uiLabels.featureView}
+                            </p>
+                        </div>
+                        <a 
+                            href={searchUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="mt-3 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded flex items-center justify-center gap-1 transition-colors"
+                        >
+                            <Icons.Search size={14} /> {imageUrl ? uiLabels.searchMore : uiLabels.searchImage}
+                        </a>
                     </div>
                 </div>
             );
@@ -567,7 +825,10 @@
             const [response, setResponse] = useState(null);
 
             const systemContext = useMemo(() => {
-                return `You are an agro-forestry expert. Answer questions about: "${plant["English Name"]}" (Tamil: ${plant.Tamil}, Hindi: ${plant.Hindi}). Data: ${JSON.stringify(plant)}.`;
+                return `You are an agro-forestry expert assistant for a web app called "Native Agro-Forestry Explorer". 
+                You are currently answering questions about a specific plant: "${plant["English Name"]}" (Tamil: ${plant.Tamil}, Hindi: ${plant.Hindi}).
+                Here is the data we have on this plant: ${JSON.stringify(plant)}.
+                Your goal is to be helpful, concise, and encourage native tree planting.`;
             }, [plant]);
 
             const handleAsk = async (customPrompt = null) => {
@@ -597,6 +858,7 @@
                         <div className="bg-purple-100 p-2 rounded-full text-purple-600"><Icons.Sparkles /></div>
                         <h3 className="font-bold text-purple-900">AI Smart Companion</h3>
                     </div>
+
                     <div className="space-y-4">
                         <div className="flex flex-wrap gap-2">
                              <button onClick={() => handleAction("calendar")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.careCalendar}</button>
@@ -604,11 +866,23 @@
                             <button onClick={() => handleAction("pest")} disabled={loading} className="flex items-center gap-1.5 px-3 py-2 bg-white text-purple-700 border border-purple-200 rounded-lg text-xs font-medium hover:bg-purple-100 hover:border-purple-300 transition-all shadow-sm">{uiLabels.pestControl}</button>
                         </div>
                         <div className="relative">
-                            <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleAsk()} placeholder={userKey ? `${uiLabels.askAi} ${plant["English Name"]}...` : "Enter API Key in settings first"} disabled={!userKey} className="w-full pl-4 pr-10 py-3 rounded-lg border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-sm disabled:bg-gray-100 disabled:text-gray-400" />
+                            <input
+                                type="text"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
+                                placeholder={userKey ? `${uiLabels.askAi} ${plant["English Name"]}...` : "Enter API Key in settings first"}
+                                disabled={!userKey}
+                                className="w-full pl-4 pr-10 py-3 rounded-lg border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-sm disabled:bg-gray-100 disabled:text-gray-400"
+                            />
                             <button onClick={() => handleAsk()} disabled={loading || !query.trim() || !userKey} className="absolute right-2 top-2 p-1.5 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50 transition-colors"><Icons.Send size={16} /></button>
                         </div>
                         {loading && <div className="flex items-center justify-center py-8 text-purple-600"><Icons.Sparkles className="animate-spin-custom mr-2" /><span className="text-sm font-medium">{uiLabels.consultingAi}</span></div>}
-                        {!loading && response && <div className="bg-white rounded-lg p-4 border border-purple-100 text-sm text-gray-800 shadow-inner max-h-64 overflow-y-auto"><div className="markdown-body whitespace-pre-wrap leading-relaxed">{response}</div></div>}
+                        {!loading && response && (
+                            <div className="bg-white rounded-lg p-4 border border-purple-100 text-sm text-gray-800 shadow-inner max-h-64 overflow-y-auto">
+                                <div className="markdown-body whitespace-pre-wrap leading-relaxed">{response}</div>
+                            </div>
+                        )}
                     </div>
                 </div>
             );
@@ -820,7 +1094,7 @@
                     {isDragging && <div className="fixed inset-0 bg-green-900 bg-opacity-90 z-50 flex items-center justify-center text-white"><div className="text-center p-10 border-4 border-dashed border-green-400 rounded-3xl"><Icons.Upload size={64} className="mx-auto mb-4" /><h2 className="text-3xl font-bold">Drop CSV File Here</h2><p className="mt-2">to update the plant database</p></div></div>}
 
                     <main className="container mx-auto px-4 py-8">
-                        {filteredPlants.length === 0 ? <div className="text-center py-20 text-gray-500"><p className="text-xl">No plants found.</p><button onClick={() => {setSearchTerm(""); setFilters({category: "All", location: "All"})}} className="mt-4 text-green-600 underline">Clear Filters</button></div> : 
+                        {filteredPlants.length === 0 ? <div className="text-center py-20 text-gray-500"><p className="text-xl">No plants found matching your criteria.</p><button onClick={() => {setSearchTerm(""); setFilters({category: "All", location: "All"})}} className="mt-4 text-green-600 underline">Clear Filters</button></div> : 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredPlants.map((plant) => (
                                 <div key={plant.id} onClick={() => setSelectedPlant(plant)} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer border border-gray-100 group overflow-hidden animate-fade-in flex flex-col h-full">
