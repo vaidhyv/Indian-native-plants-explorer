@@ -2231,7 +2231,7 @@
                         script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
                         document.body.appendChild(script);
                         window.googleTranslateElementInit = function() {
-                            new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+                            new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'en,ta,kn,te,hi,ko', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');
                         };
                     }
                 }
@@ -2486,3 +2486,4 @@
     </script>
 </body>
 </html>
+
